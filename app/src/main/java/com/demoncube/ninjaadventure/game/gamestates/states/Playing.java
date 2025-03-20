@@ -12,8 +12,10 @@ import com.demoncube.ninjaadventure.game.Game;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
 import com.demoncube.ninjaadventure.game.entities.GameCharacters;
 import com.demoncube.ninjaadventure.game.entities.Player;
+import com.demoncube.ninjaadventure.game.enviroment.OldMapManager;
 import com.demoncube.ninjaadventure.game.gamestates.BaseState;
 import com.demoncube.ninjaadventure.game.gamestates.GameStateInterface;
+import com.demoncube.ninjaadventure.game.helpers.GameConst;
 import com.demoncube.ninjaadventure.game.ui.UI;
 import com.demoncube.ninjaadventure.game.ui.UIJoystick;
 
@@ -21,37 +23,51 @@ import java.util.ArrayList;
 
 public class Playing extends BaseState implements GameStateInterface {
 
-    PointF camera = new PointF(0,0);
+    float cameraX = 0, cameraY = 0;
     ArrayList<UI> ui = new ArrayList<>();
 
-    Player player;
+    OldMapManager oldMapManager = new OldMapManager();
+
+    Player mainPlayer;
     PlayerController playerController;
+
+    //------------- DEBUG -------------//
+    Paint circlePaint, circleDPaint;
+
+    //-------------- CODE -------------//
     public Playing(Game game) {
         super(game);
-        Paint circlePaint = new Paint();
-        circlePaint.setStyle(Paint.Style.STROKE);
-        circlePaint.setStrokeWidth(5);
-        circlePaint.setColor(Color.GRAY);
-        Paint circleDPaint = new Paint();
-        circleDPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        circleDPaint.setStrokeWidth(5);
-        circleDPaint.setColor(Color.DKGRAY);
+        initDebug();
+
         UIJoystick joystick = new UIJoystick(new PointF( 180, SCREEN_HEIGHT-180),100, circlePaint, circleDPaint);
         ui.add(joystick);
         playerController = new PlayerController(joystick);
-        player = new Player(GameCharacters.NINJA_RED, playerController);
+        mainPlayer = new Player(new PointF(SCREEN_WIDTH/2f - GameConst.Sprite.SIZE/2f, SCREEN_HEIGHT/2f - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
+    }
+
+    private void initDebug() {
+        circlePaint = new Paint();
+        circlePaint.setStyle(Paint.Style.STROKE);
+        circlePaint.setStrokeWidth(5);
+        circlePaint.setColor(Color.GRAY);
+        circleDPaint = new Paint();
+        circleDPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        circleDPaint.setStrokeWidth(5);
+        circleDPaint.setColor(Color.DKGRAY);
     }
 
     @Override
     public void update(double delta) {
-        camera.x -= playerController.getMoveVectors().x;
-        camera.y -= playerController.getMoveVectors().y;
-        player.update(delta, true);
+        cameraX -= playerController.getMoveVectors().x * mainPlayer.getMovementSpeed() * delta;
+        cameraY -= playerController.getMoveVectors().y * mainPlayer.getMovementSpeed() * delta;
+
+        mainPlayer.update(delta, true);
     }
 
     @Override
     public void render(Canvas c) {
-        player.render(c);
+        oldMapManager.drawTiles(c, cameraX, cameraY);
+        mainPlayer.render(c, cameraX, cameraY);
         for (UI element: ui) {
             element.render(c);
         }

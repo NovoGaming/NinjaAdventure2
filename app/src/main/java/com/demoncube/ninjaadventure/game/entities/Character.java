@@ -12,6 +12,7 @@ public abstract class Character extends Entity {
     protected int aniTick, aniIndex;
     protected int faceDir = GameConst.FaceDir.DOWN;
     protected boolean isMoving = false;
+    protected int movementSpeed = 0;
     protected GameCharacters gameCharType;
     protected ControllerInterface controller;
 
@@ -30,7 +31,6 @@ public abstract class Character extends Entity {
     protected void updateAnimation() {
         if (isMoving) moveAnimation();
     }
-
     private void moveAnimation(){
         aniTick++;
         if (aniTick >= GameConst.Animation.SPEED) {
@@ -41,12 +41,10 @@ public abstract class Character extends Entity {
             }
         }
     }
-
     public void resetAnimation() {
         aniTick = 0;
         aniIndex = 0;
     }
-
     public int getAniIndex() {
         return aniIndex;
     }
@@ -54,9 +52,15 @@ public abstract class Character extends Entity {
     public int getFaceDir() {
         return faceDir;
     }
-
     public void setFaceDir(int faceDir) {
         this.faceDir = faceDir;
+    }
+
+    public int getMovementSpeed() {
+        return movementSpeed;
+    }
+    public void setMovementSpeed(int movementSpeed) {
+        this.movementSpeed = movementSpeed;
     }
 
     public GameCharacters getGameCharType() {

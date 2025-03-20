@@ -30,6 +30,10 @@ public abstract class Entity implements Comparable<Entity> {
         this.lastCamYValue = lastCamYValue;
     }
 
+    public PointF getPosition() {
+        return new PointF(hitbox.left, hitbox.top);
+    }
+
     @Override
     public int compareTo(Entity other) {
         return Float.compare(hitbox.top - lastCamYValue, other.hitbox.top - other.lastCamYValue);
