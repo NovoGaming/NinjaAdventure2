@@ -1,20 +1,20 @@
-package com.demoncube.ninjaadventure.game.enviroment;
+package com.demoncube.ninjaadventure.game.mapManagement.maps;
 
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
 
-public class OldGameMap {
+public class GameMap {
 
     private int[][] spritesIds;
-    private Tileset tileset;
+    private int[][] tilesetIds;
 
 
-    public OldGameMap(int[][] spritesIds, Tileset tileset) {
+    public GameMap(int[][] spritesIds, int[][] tilesetIds) {
         this.spritesIds = spritesIds;
-        this.tileset = tileset;
+        this.tilesetIds = tilesetIds;
     }
 
-    public Tileset getTileset() {
-        return tileset;
+    public int getTileset(int xIndex, int yIndex) {
+        return tilesetIds[yIndex][xIndex];
     }
 
     public int getSpriteID(int xIndex, int yIndex) {

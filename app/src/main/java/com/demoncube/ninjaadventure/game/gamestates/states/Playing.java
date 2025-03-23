@@ -12,7 +12,7 @@ import com.demoncube.ninjaadventure.game.Game;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
 import com.demoncube.ninjaadventure.game.entities.GameCharacters;
 import com.demoncube.ninjaadventure.game.entities.Player;
-import com.demoncube.ninjaadventure.game.enviroment.OldMapManager;
+import com.demoncube.ninjaadventure.game.mapManagement.MapManager;
 import com.demoncube.ninjaadventure.game.gamestates.BaseState;
 import com.demoncube.ninjaadventure.game.gamestates.GameStateInterface;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
@@ -26,7 +26,7 @@ public class Playing extends BaseState implements GameStateInterface {
     float cameraX = 0, cameraY = 0;
     ArrayList<UI> ui = new ArrayList<>();
 
-    OldMapManager oldMapManager = new OldMapManager();
+    MapManager mapManager = new MapManager();
 
     Player mainPlayer;
     PlayerController playerController;
@@ -66,7 +66,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
     @Override
     public void render(Canvas c) {
-        oldMapManager.drawTiles(c, cameraX, cameraY);
+        mapManager.drawTiles(c, cameraX, cameraY);
         mainPlayer.render(c, cameraX, cameraY);
         for (UI element: ui) {
             element.render(c);

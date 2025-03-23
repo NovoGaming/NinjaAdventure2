@@ -7,13 +7,15 @@ public class GameSettings {
 
     public static class baseSettings {
         public static int FRAME_RATE = 60;
+        public static int TILE_CACHE_SIZE = 400;
     }
 
     public static final class debug {
         //-------------------- Enables --------------------
         public static boolean SHOW_FPS = true;                                                      //Show FPS on screan
-        public static boolean CALL_FPS = false;                                                      //Writes fps int LogCat as System.out
+        public static boolean CALL_FPS = false;                                                     //Writes fps int LogCat as System.out
         public static boolean DRAW_UI_DEBUG = false;
+        public static boolean DRAW_MAP_COLLISIONS = true;
         public static boolean DRAW_ENTITY_HITBOX = true;
         public static boolean DRAW_DEAD_ENTITY_HITBOX = true;
         public static boolean DRAW_TRIGGER_HITBOX = true;
