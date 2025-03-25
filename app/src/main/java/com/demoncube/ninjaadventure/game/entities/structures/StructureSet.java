@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.util.LruCache;
 
 import com.demoncube.ninjaadventure.GameActivity;
+import com.demoncube.ninjaadventure.R;
 import com.demoncube.ninjaadventure.game.GameSettings;
 import com.demoncube.ninjaadventure.game.helpers.BitmapMethods;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
@@ -15,9 +16,9 @@ import com.demoncube.ninjaadventure.game.helpers.customVariables.Drawable;
 
 import java.util.Map;
 
-public class StructureSet implements BitmapMethods {
+public enum StructureSet implements BitmapMethods {
 
-
+    VILLAGE(R.drawable.structureset_village);
 
     //----------------------------------------------------------------------------------------------//
     //                                        Enum Functions                                        //
@@ -27,13 +28,8 @@ public class StructureSet implements BitmapMethods {
 
 
     private final Bitmap spriteSheet;
-    private final Map<Integer, Rect[]> structureList;
-    private final int tilesInWidth, tilesInHeight;
 
-    public StructureSet(int resourceId, int tilesInWidth, int tilesInHeight, Map<Integer, Rect[]> collisionsList) {
-        this.tilesInWidth = tilesInWidth;
-        this.tilesInHeight = tilesInHeight;
-        this.structureList = collisionsList;
+    StructureSet(int resourceId) {
         options.inScaled = false;
         spriteSheet = BitmapFactory.decodeResource(GameActivity.getGameContext().getResources(), resourceId, options);
     }
