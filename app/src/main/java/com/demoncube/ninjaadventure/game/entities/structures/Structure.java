@@ -11,7 +11,6 @@ import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 
 import com.demoncube.ninjaadventure.game.entities.Entity;
@@ -23,9 +22,8 @@ import java.util.ArrayList;
 
 public class Structure extends Entity {
 
-    private Bitmap mainBitmap;
+    private final Bitmap mainBitmap;
     private ArrayList<DecorBitmap> decorBitmaps;
-    private Point[] decorPositions;
 
     private Paint boxDebugPaint, collisionBoxDebugPaint;
     public Structure(PointF pos, StructureSet structureSet, int structureId) {
@@ -63,7 +61,7 @@ public class Structure extends Entity {
                     box.top + cameraY,
                     null
             );
-            if (decorBitmaps != null || decorPositions != null) {
+            if (decorBitmaps != null) {
                 for (DecorBitmap decor : decorBitmaps) {
                     c.drawBitmap(
                             decor.bitmap,
@@ -97,13 +95,13 @@ public class Structure extends Entity {
 
     public void addDecor(StructureSet structureSet, int decorId, int decorPosX, int decorPosY) {
         if (decorBitmaps == null) decorBitmaps = new ArrayList<>();
-        decorBitmaps.add(new DecorBitmap(structureSet.getStructure(decorId).bitmap, decorPosX, decorPosY));
+        decorBitmaps.add(new DecorBitmap(structureSet.getDecor(decorId), decorPosX, decorPosY));
     }
 
     public void changeDecor(int decorId, StructureSet structureSet, int newDecorId, int decorPosX, int decorPosY) {
         if (decorBitmaps == null) return;
         if (decorBitmaps.size() <= decorId) return;
-        decorBitmaps.get(decorId).bitmap = structureSet.getStructure(newDecorId).bitmap;
+        decorBitmaps.get(decorId).bitmap = structureSet.getDecor(newDecorId);
         decorBitmaps.get(decorId).posX = decorPosX;
         decorBitmaps.get(decorId).posY = decorPosY;
     }
