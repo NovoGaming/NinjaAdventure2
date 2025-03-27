@@ -1,26 +1,27 @@
 package com.demoncube.ninjaadventure.game.entities;
 
-import static com.demoncube.ninjaadventure.GameActivity.*;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.*;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
 
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
+import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 
 public class Player extends Character{
 
-    Paint playerHitboxDebugPaint;
+    private Paint boxDebugPaint, collisionBoxDebugPaint;
 
     public Player(PointF pos,GameCharacters gameCharType, ControllerInterface controller) {
-        super(pos, gameCharType, controller);
+        super(pos, gameCharType, new CollisionBox[] {new CollisionBox(new Rect(3,12,13, 16),0)},controller);
         init();
     }
 
     public Player(GameCharacters gameCharType, ControllerInterface controller) {
-        super(new PointF(0,0), gameCharType, controller);
+        super(new PointF(0,0), gameCharType, new CollisionBox[] {new CollisionBox(new Rect(3,10,13, 16),0)}, controller);
         init();
     }
 
@@ -28,10 +29,15 @@ public class Player extends Character{
         movementSpeed = 300;
 
         //--------- DEBUG ---------//
-        playerHitboxDebugPaint = new Paint();
-        playerHitboxDebugPaint.setStrokeWidth(HITBOX_STROKE_WIDTH);
-        playerHitboxDebugPaint.setStyle(HITBOX_PAINT_STYLE);
-        playerHitboxDebugPaint.setColor(PLAYER_HITBOX_COLOR);
+        boxDebugPaint = new Paint();
+        boxDebugPaint.setStrokeWidth(BOX_STROKE_WIDTH);
+        boxDebugPaint.setStyle(BOX_PAINT_STYLE);
+        boxDebugPaint.setColor(PLAYER_BOX_COLOR);
+
+        collisionBoxDebugPaint = new Paint();
+        collisionBoxDebugPaint.setStrokeWidth(BOX_STROKE_WIDTH);
+        collisionBoxDebugPaint.setStyle(BOX_PAINT_STYLE);
+        collisionBoxDebugPaint.setColor(COLLISION_BOX_COLOR);
     }
 
     public void update(double delta ,boolean movePLayer) {
@@ -49,10 +55,10 @@ public class Player extends Character{
             isMoving = false;
             resetAnimation();
         } else isMoving = true;
-        hitbox.left += x * baseSpeed;
-        hitbox.top += y * baseSpeed;
-        hitbox.right += x * baseSpeed;
-        hitbox.bottom += y * baseSpeed;
+        box.left += x * baseSpeed;
+        box.top += y * baseSpeed;
+        box.right += x * baseSpeed;
+        box.bottom += y * baseSpeed;
         if (Math.abs(x) > Math.abs(y)) {
             if (x > 0) faceDir = GameConst.FaceDir.RIGHT;
             if (x < 0) faceDir = GameConst.FaceDir.LEFT;
@@ -65,16 +71,27 @@ public class Player extends Character{
     public void render(Canvas c, float cameraX, float cameraY){
         c.drawBitmap(
                 getGameCharType().getSprite(aniIndex, faceDir),
-                hitbox.left + cameraX,
-                hitbox.top + cameraY,
+                box.left + cameraX,
+                box.top + cameraY,
                 null
         );
-        if (DRAW_ENTITY_HITBOX) c.drawRect(
-                hitbox.left + cameraX,
-                hitbox.top + cameraY,
-                hitbox.right + cameraX,
-                hitbox.bottom + cameraY,
-                playerHitboxDebugPaint
+        if (DRAW_ENTITY_BOX) c.drawRect(
+                box.left + cameraX,
+                box.top + cameraY,
+                box.right + cameraX,
+                box.bottom + cameraY,
+                boxDebugPaint
         );
+        if (DRAW_COLLISION_BOX) {
+            for (CollisionBox collision : collisions) {
+                c.drawRect(
+                        collision.rect.left + box.left + cameraX,
+                        collision.rect.top + box.top + cameraY,
+                        collision.rect.right + box.left + cameraX,
+                        collision.rect.bottom + box.top + cameraY,
+                        collisionBoxDebugPaint
+                );
+            }
+        }
     }
 }

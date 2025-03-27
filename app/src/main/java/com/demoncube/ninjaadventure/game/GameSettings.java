@@ -16,23 +16,25 @@ public class GameSettings {
         public static boolean CALL_FPS = false;                                                     //Writes fps int LogCat as System.out
         public static boolean DRAW_UI_DEBUG = false;
         public static boolean DRAW_MAP_COLLISIONS = true;
-        public static boolean DRAW_ENTITY_HITBOX = true;
-        public static boolean DRAW_DEAD_ENTITY_HITBOX = true;
-        public static boolean DRAW_TRIGGER_HITBOX = true;
+        public static boolean DRAW_ENTITY_BOX = true;
+        public static boolean DRAW_DEAD_ENTITY_BOX = true;
+        public static boolean DRAW_TRIGGER_BOX = true;
+        public static boolean DRAW_COLLISION_BOX = true;
 
         //-------------------- Styling --------------------
         public static int FPS_COLOR = Color.RED;
         public static int UI_COLOR = Color.YELLOW;
 
-        public static int HITBOX_STROKE_WIDTH = 4;
-        public static Paint.Style HITBOX_PAINT_STYLE = Paint.Style.STROKE;
-        public static int PLAYER_HITBOX_COLOR = Color.GREEN;
-        public static int WEAPON_HITBOX_COLOR = Color.BLUE;
-        public static int ENEMY_HITBOX_COLOR = Color.RED;
-        public static int DEAD_HITBOX_COLOR = Color.DKGRAY;
-        public static int DROPPED_ITEM_HITBOX_COLOR = Color.CYAN;
-        public static int TRIGGER_HITBOX_COLOR = Color.YELLOW;
-        public static int OTHER_ENTITY_HITBOX_COLOR = Color.MAGENTA;
+        public static int BOX_STROKE_WIDTH = 4;
+        public static Paint.Style BOX_PAINT_STYLE = Paint.Style.STROKE;
+        public static int COLLISION_BOX_COLOR = Color.WHITE;
+        public static int PLAYER_BOX_COLOR = Color.GREEN;
+        public static int WEAPON_BOX_COLOR = Color.BLUE;
+        public static int ENEMY_BOX_COLOR = Color.RED;
+        public static int DEAD_BOX_COLOR = Color.DKGRAY;
+        public static int DROPPED_ITEM_BOX_COLOR = Color.CYAN;
+        public static int TRIGGER_BOX_COLOR = Color.YELLOW;
+        public static int OTHER_ENTITY_BOX_COLOR = Color.MAGENTA;
     }
 
 }

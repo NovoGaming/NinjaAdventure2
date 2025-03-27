@@ -6,6 +6,7 @@ import android.graphics.PointF;
 
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
+import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 
 public abstract class Character extends Entity {
 
@@ -16,14 +17,14 @@ public abstract class Character extends Entity {
     protected GameCharacters gameCharType;
     protected ControllerInterface controller;
 
-    public Character(PointF pos, GameCharacters gameCharType) {
-        super(pos, GameConst.Sprite.SIZE, GameConst.Sprite.SIZE);
+    public Character(PointF pos, CollisionBox[] collisions, GameCharacters gameCharType) {
+        super(pos, GameConst.Sprite.SIZE, GameConst.Sprite.SIZE, collisions);
         this.gameCharType = gameCharType;
         this.controller = null;
     }
 
-    public Character(PointF pos, GameCharacters gameCharType, ControllerInterface controller) {
-        super(pos, GameConst.Sprite.SIZE, GameConst.Sprite.SIZE);
+    public Character(PointF pos, GameCharacters gameCharType, CollisionBox[] collisions, ControllerInterface controller) {
+        super(pos, GameConst.Sprite.SIZE, GameConst.Sprite.SIZE, collisions);
         this.gameCharType = gameCharType;
         this.controller = controller;
     }

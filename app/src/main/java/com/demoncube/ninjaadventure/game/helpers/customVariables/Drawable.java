@@ -5,11 +5,11 @@ import android.graphics.Bitmap;
 public class Drawable {
 
     public Bitmap bitmap;
-    public CollisionBox[] collision;
+    public CollisionBox[] collisions;
 
     public Drawable(Bitmap bitmap, CollisionBox[] collisions) {
         this.bitmap = bitmap;
-        this.collision = collision;
+        this.collisions = this.collisions;
     }
 
     public Drawable(){}

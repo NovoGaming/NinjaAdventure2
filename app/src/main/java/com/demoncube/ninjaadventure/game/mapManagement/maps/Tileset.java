@@ -62,7 +62,7 @@ public enum Tileset implements BitmapMethods {
             int y = (id / tilesInWidth) * DEFAULT_SIZE;
             if ((tilesInHeight - 1) * DEFAULT_SIZE < y) y = (tilesInHeight - 1) * DEFAULT_SIZE;
             drawable.bitmap = getScaledBitmap(Bitmap.createBitmap(spriteSheet, x, y, DEFAULT_SIZE, DEFAULT_SIZE));
-            if (collisionsList != null) drawable.collision = collisionsList.getOrDefault(id, null);
+            if (collisionsList != null) drawable.collisions = collisionsList.getOrDefault(id, null);
             tileCache.put(id, drawable);
             return drawable;
         }
@@ -74,7 +74,7 @@ public enum Tileset implements BitmapMethods {
     }
 
     public CollisionBox[] getCollisions (int id) {
-        return getTile(id).collision;
+        return getTile(id).collisions;
     }
 
     public void clearCache() {
