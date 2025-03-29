@@ -8,13 +8,20 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.demoncube.ninjaadventure.GameActivity;
+import com.demoncube.ninjaadventure.game.entities.Entity;
+import com.demoncube.ninjaadventure.game.entities.Player;
 import com.demoncube.ninjaadventure.game.helpers.GameMapStorage;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.GameMap;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.Tileset;
+import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
+
+import java.util.Arrays;
 
 public class MapManager {
     private GameMap currentMap;
+
+    public Entity[] drawList;
 
     private final Tileset floorset = Tileset.FLOOR;
     private final Tileset cliffset = Tileset.CLIFF;
@@ -29,21 +36,42 @@ public class MapManager {
         collisionPaint.setColor(Color.BLACK);
     }
 
-    public boolean canMoveHere(float x, float y) {
-        if (x < 0 || y < 0) return false;
-        if (x >= getMaxWidthCurrentMap() || y >= getMaxHeightCurrentMap()) return false;
-        return true;
-    }
-
-    public int getMaxWidthCurrentMap() {
+    public int getCurrentMapWidth() {
         return currentMap.getArrayWidth() * SIZE;
     }
 
-    public int getMaxHeightCurrentMap() {
+    public int getCurrentMapHeight() {
         return currentMap.getArrayHeight() * SIZE;
     }
 
-    public void drawTiles(Canvas c, float cameraX, float cameraY){
+    public void update(double delta, float cameraX, float cameraY) {
+        getDrawableList(currentMap);
+        for (Entity e : drawList) {
+            e.setLastCamYValue(cameraY);
+        }
+    }
+
+    private void getDrawableList(GameMap map) {
+        drawList = new Entity[getDrawableAmount(map)];
+        int i = 0;
+        if (map.getStructures() != null)
+            for (Structure structure : map.getStructures()) {
+                drawList[i++] = structure;
+        };
+        if (map.getPlayers() != null)
+            for (Player player : map.getPlayers()) {
+                drawList[i++] = player;
+        };
+    }
+
+    private int getDrawableAmount(GameMap map) {
+        int amount = 0;
+        if (map.getStructures() != null) amount += map.getStructures().size();
+        if (map.getPlayers() != null) amount += map.getPlayers().size();
+        return amount;
+    }
+
+    public void render(Canvas c, float cameraX, float cameraY){
 
         // Calculate number of tiles that fit horizontally and vertically
         int tilesAcross = (int) Math.ceil(GameActivity.SCREEN_WIDTH / (float) SIZE);
@@ -90,6 +118,12 @@ public class MapManager {
                 }
             }
         }
+
+        Arrays.sort(drawList);
+        for (Entity e : drawList){
+            e.render(c, cameraX, cameraY);
+        }
+
     }
 
 
@@ -102,7 +136,7 @@ public class MapManager {
 
     private void initMap() {
 
-        GameMap mainMap = new GameMap(GameMapStorage.MainMap.TILE_IDS, GameMapStorage.MainMap.TILESET_IDS);
+        GameMap mainMap = new GameMap(GameMapStorage.MainMap.TILE_IDS, GameMapStorage.MainMap.TILESET_IDS, GameMapStorage.MainMap.STRUCTURES());
 
         currentMap = mainMap;
     }

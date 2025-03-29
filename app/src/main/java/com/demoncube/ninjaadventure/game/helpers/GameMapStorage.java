@@ -1,5 +1,14 @@
 package com.demoncube.ninjaadventure.game.helpers;
 
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
+
+import android.graphics.PointF;
+
+import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
+import com.demoncube.ninjaadventure.game.mapManagement.structures.StructureSet;
+
+import java.util.ArrayList;
+
 public final class GameMapStorage {
     public static final class MainMap {
 
@@ -41,6 +50,15 @@ public final class GameMapStorage {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
+
+        public static ArrayList<Structure> STRUCTURES() {
+            ArrayList<Structure> array = new ArrayList<>();
+            array.add(new Structure(new PointF(5 * SIZE,3 * SIZE), StructureSet.VILLAGE,0));
+            array.add(new Structure(new PointF(15 * SIZE,2 * SIZE), StructureSet.VILLAGE,0));
+            array.add(new Structure(new PointF(16 * SIZE,9 * SIZE), StructureSet.VILLAGE,0));
+            array.add(new Structure(new PointF(5 * SIZE,9 * SIZE), StructureSet.VILLAGE,0));
+            return array;
+        }
 
     }
 }

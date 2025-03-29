@@ -17,7 +17,7 @@ public abstract class Character extends Entity {
     protected GameCharacters gameCharType;
     protected ControllerInterface controller;
 
-    public Character(PointF pos, CollisionBox[] collisions, GameCharacters gameCharType) {
+    public Character(PointF pos, GameCharacters gameCharType, CollisionBox[] collisions) {
         super(pos, GameConst.Sprite.SIZE, GameConst.Sprite.SIZE, collisions);
         this.gameCharType = gameCharType;
         this.controller = null;
@@ -66,6 +66,16 @@ public abstract class Character extends Entity {
 
     public GameCharacters getGameCharType() {
         return gameCharType;
+    }
+    public void setGameCharType(GameCharacters charType){
+        this.gameCharType = charType;
+    }
+
+    public ControllerInterface getController() {
+        return controller;
+    }
+    public void setController(ControllerInterface controller) {
+        this.controller = controller;
     }
 }
 

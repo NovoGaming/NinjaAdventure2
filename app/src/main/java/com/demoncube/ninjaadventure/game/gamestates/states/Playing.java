@@ -1,7 +1,6 @@
 package com.demoncube.ninjaadventure.game.gamestates.states;
 
 import static com.demoncube.ninjaadventure.GameActivity.*;
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.*;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,8 +13,6 @@ import com.demoncube.ninjaadventure.game.Game;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
 import com.demoncube.ninjaadventure.game.entities.GameCharacters;
 import com.demoncube.ninjaadventure.game.entities.Player;
-import com.demoncube.ninjaadventure.game.entities.structures.Structure;
-import com.demoncube.ninjaadventure.game.entities.structures.StructureSet;
 import com.demoncube.ninjaadventure.game.mapManagement.MapManager;
 import com.demoncube.ninjaadventure.game.gamestates.BaseState;
 import com.demoncube.ninjaadventure.game.gamestates.GameStateInterface;
@@ -29,9 +26,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
     float cameraX = 0, cameraY = 0;
     ArrayList<UI> ui = new ArrayList<>();
-    ArrayList<Structure> structures = new ArrayList<>();
-
-    MapManager mapManager = new MapManager();
+    MapManager mapManager;
 
     Player mainPlayer;
     PlayerController playerController;
@@ -44,16 +39,13 @@ public class Playing extends BaseState implements GameStateInterface {
         super(game);
         initDebug();
 
+        mapManager = new MapManager();
+
         UIJoystick joystick = new UIJoystick(new PointF( 180, SCREEN_HEIGHT-180),100, circlePaint, circleDPaint);
         ui.add(joystick);
-        structures.add(new Structure(new PointF(0,0),StructureSet.VILLAGE, 1));
-        structures.add(new Structure(new PointF(5*SIZE,0),StructureSet.VILLAGE, 4));
-        structures.add(new Structure(new PointF(10*SIZE,0),StructureSet.VILLAGE, 5));
-        structures.add(new Structure(new PointF(15*SIZE,0),StructureSet.VILLAGE, 6));
-        structures.add(new Structure(new PointF(0,5*SIZE),StructureSet.VILLAGE, 7));
-        structures.add(new Structure(new PointF(5*SIZE,5*SIZE),StructureSet.VILLAGE, 8));
         playerController = new PlayerController(joystick);
-        mainPlayer = new Player(new PointF(SCREEN_WIDTH/2f - GameConst.Sprite.SIZE/2f, SCREEN_HEIGHT/2f - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
+        mainPlayer = new Player(new PointF(cameraX*-1 + SCREEN_WIDTH/2f - GameConst.Sprite.SIZE/2f, cameraY*-1 + SCREEN_HEIGHT/2f - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
+        mapManager.getCurrentMap().getPlayers().add(mainPlayer);
     }
 
     private void initDebug() {
@@ -68,27 +60,18 @@ public class Playing extends BaseState implements GameStateInterface {
         circleDPaint.setColor(Color.DKGRAY);
     }
 
-    int i = 0;
-
     @Override
     public void update(double delta) {
         cameraX -= playerController.getMoveVectors().x * mainPlayer.getMovementSpeed() * delta;
         cameraY -= playerController.getMoveVectors().y * mainPlayer.getMovementSpeed() * delta;
 
-        mainPlayer.update(delta, true);
-
-        i++;
-        if (i == 120) structures.get(0).addDecor(StructureSet.VILLAGE, 12,1,1);
+        mapManager.update(delta, cameraX, cameraY);
+        mainPlayer.update(delta, true, cameraX, cameraY);
     }
 
     @Override
     public void render(Canvas c) {
-        mapManager.drawTiles(c, cameraX, cameraY);
-        mainPlayer.render(c, cameraX, cameraY);
-
-        for (Structure element: structures) {
-            element.render(c, cameraX, cameraY);
-        }
+        mapManager.render(c, cameraX, cameraY);
 
         for (UI element: ui) {
             element.render(c);

@@ -1,4 +1,4 @@
-package com.demoncube.ninjaadventure.game.entities;
+package com.demoncube.ninjaadventure.game.entities.enemies;
 
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.*;
 
@@ -8,45 +8,46 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
+import com.demoncube.ninjaadventure.game.entities.Character;
+import com.demoncube.ninjaadventure.game.entities.GameCharacters;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 
-public class Player extends Character{
-
+public class Skeleton extends Character {
     //-------------------------------------------------------------------------//
     //                          Constructors + init                            //
     //-------------------------------------------------------------------------//
 
     private Paint boxDebugPaint, collisionBoxDebugPaint;
 
-    public Player(PointF pos,GameCharacters gameCharType, ControllerInterface controller) {
+    public Skeleton(PointF pos,GameCharacters gameCharType, ControllerInterface controller) {
         super(pos, gameCharType, new CollisionBox[] {new CollisionBox(new Rect(3,12,13, 16),0)},controller);
         init();
     }
 
-    public Player(GameCharacters gameCharType, ControllerInterface controller) {
+    public Skeleton(GameCharacters gameCharType, ControllerInterface controller) {
         super(new PointF(0,0), gameCharType, new CollisionBox[] {new CollisionBox(new Rect(3,10,13, 16),0)}, controller);
         init();
     }
 
-    public Player(PointF pos,GameCharacters gameCharType) {
+    public Skeleton(PointF pos,GameCharacters gameCharType) {
         super(pos, gameCharType, new CollisionBox[] {new CollisionBox(new Rect(3,12,13, 16),0)});
         init();
     }
 
-    public Player(GameCharacters gameCharType) {
+    public Skeleton(GameCharacters gameCharType) {
         super(new PointF(0,0), gameCharType, new CollisionBox[] {new CollisionBox(new Rect(3,10,13, 16),0)});
         init();
     }
 
     private void init() {
-        movementSpeed = 300;
+        movementSpeed = 250;
 
         //--------- DEBUG ---------//
         boxDebugPaint = new Paint();
         boxDebugPaint.setStrokeWidth(BOX_STROKE_WIDTH);
         boxDebugPaint.setStyle(BOX_PAINT_STYLE);
-        boxDebugPaint.setColor(PLAYER_BOX_COLOR);
+        boxDebugPaint.setColor(ENEMY_BOX_COLOR);
 
         collisionBoxDebugPaint = new Paint();
         collisionBoxDebugPaint.setStrokeWidth(BOX_STROKE_WIDTH);
@@ -59,14 +60,12 @@ public class Player extends Character{
     //-------------------------------------------------------------------------//
 
 
-    public void update(double delta ,boolean movePLayer, float cameraX, float cameraY) {
+    public void update(double delta ,boolean movePLayer) {
         if (movePLayer) {
             updateAnimation();
             updatePlayerMove(delta);
         }
-        super.update(delta, cameraX, cameraY);
     }
-
 
     private void updatePlayerMove(double delta) {
         float baseSpeed = (float) (delta * movementSpeed);
@@ -124,6 +123,5 @@ public class Player extends Character{
     //-------------------------------------------------------------------------//
     //                            Support functions                            //
     //-------------------------------------------------------------------------//
-
 
 }

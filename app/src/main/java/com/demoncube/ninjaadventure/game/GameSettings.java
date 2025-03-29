@@ -16,13 +16,13 @@ public class GameSettings {
         public static boolean CALL_FPS = false;                                                     //Writes fps int LogCat as System.out
         public static boolean DRAW_UI_DEBUG = false;
         public static boolean DRAW_MAP_COLLISIONS = true;
-        public static boolean DRAW_ENTITY_BOX = true;
+        public static boolean DRAW_ENTITY_BOX = false;
         public static boolean DRAW_DEAD_ENTITY_BOX = true;
-        public static boolean DRAW_TRIGGER_BOX = true;
+        public static boolean DRAW_TRIGGER_AREA = true;
         public static boolean DRAW_COLLISION_BOX = true;
 
         //-------------------- Styling --------------------
-        public static int FPS_COLOR = Color.RED;
+        public static int FPS_COLOR = Color.DKGRAY;
         public static int UI_COLOR = Color.YELLOW;
 
         public static int BOX_STROKE_WIDTH = 4;
@@ -33,7 +33,7 @@ public class GameSettings {
         public static int ENEMY_BOX_COLOR = Color.RED;
         public static int DEAD_BOX_COLOR = Color.DKGRAY;
         public static int DROPPED_ITEM_BOX_COLOR = Color.CYAN;
-        public static int TRIGGER_BOX_COLOR = Color.YELLOW;
+        public static int TRIGGER_AREA_COLOR = Color.YELLOW;
         public static int OTHER_ENTITY_BOX_COLOR = Color.MAGENTA;
     }
 

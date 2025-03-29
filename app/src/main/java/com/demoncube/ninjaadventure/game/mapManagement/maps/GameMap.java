@@ -1,14 +1,24 @@
 package com.demoncube.ninjaadventure.game.mapManagement.maps;
 
+import com.demoncube.ninjaadventure.game.entities.Player;
+import com.demoncube.ninjaadventure.game.entities.enemies.Skeleton;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
+import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
+
+import java.util.ArrayList;
 
 public class GameMap {
 
     private int[][] spritesIds;
     private int[][] tilesetIds;
 
+    private ArrayList<Structure> structures;
+    private ArrayList<Skeleton> enemies;
+    private ArrayList<Player> players = new ArrayList<>();
 
-    public GameMap(int[][] spritesIds, int[][] tilesetIds) {
+
+    public GameMap(int[][] spritesIds, int[][] tilesetIds, ArrayList<Structure> structures) {
+        if (structures == null) this.structures = new ArrayList<>(); else this.structures = structures;
         this.spritesIds = spritesIds;
         this.tilesetIds = tilesetIds;
     }
@@ -35,4 +45,10 @@ public class GameMap {
         return getArrayHeight() * GameConst.Sprite.SIZE;
     }
 
+    public ArrayList<Structure> getStructures() {
+        return structures;
+    }
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
 }

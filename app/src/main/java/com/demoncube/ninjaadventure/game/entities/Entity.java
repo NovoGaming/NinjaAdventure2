@@ -1,5 +1,6 @@
 package com.demoncube.ninjaadventure.game.entities;
 
+import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
@@ -9,6 +10,7 @@ import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 public abstract class Entity implements Comparable<Entity> {
 
     private float lastCamYValue = 0;
+    private boolean lockCompare = false;
 
     protected RectF box;
     protected CollisionBox[] collisions;
@@ -26,6 +28,10 @@ public abstract class Entity implements Comparable<Entity> {
         }
     }
 
+    public void render(Canvas c, float cameraX, float cameraY) {}
+    public void update(double delta, float cameraX, float cameraY) {
+
+    }
     public RectF getBox() {
         return box;
     }
@@ -48,6 +54,7 @@ public abstract class Entity implements Comparable<Entity> {
 
     @Override
     public int compareTo(Entity other) {
-        return Float.compare(box.top - lastCamYValue, other.box.top - other.lastCamYValue);
+        if (other.lockCompare) return -1;
+        return Float.compare(box.bottom - lastCamYValue, other.box.bottom - other.lastCamYValue);
     }
 }

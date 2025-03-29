@@ -1,4 +1,4 @@
-package com.demoncube.ninjaadventure.game.entities.structures;
+package com.demoncube.ninjaadventure.game.mapManagement.structures;
 
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.BOX_PAINT_STYLE;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.BOX_STROKE_WIDTH;
@@ -52,45 +52,49 @@ public class Structure extends Entity {
         collisionBoxDebugPaint.setColor(COLLISION_BOX_COLOR);
     }
 
+    @Override
+    public void update(double delta, float cameraX, float cameraY) {
+        super.update(delta, cameraX, cameraY);
+    }
 
-        public void render(Canvas c, float cameraX, float cameraY) {
-
-            c.drawBitmap(
-                    mainBitmap,
-                    box.left + cameraX,
-                    box.top + cameraY,
-                    null
-            );
-            if (decorBitmaps != null) {
-                for (DecorBitmap decor : decorBitmaps) {
-                    c.drawBitmap(
-                            decor.bitmap,
-                            decor.posX * SIZE + box.left + cameraX,
-                            decor.posY * SIZE + box.top + cameraY,
-                            null
-                    );
-                }
+    @Override
+    public void render(Canvas c, float cameraX, float cameraY) {
+        c.drawBitmap(
+                mainBitmap,
+                box.left + cameraX,
+                box.top + cameraY,
+                null
+        );
+        if (decorBitmaps != null) {
+            for (DecorBitmap decor : decorBitmaps) {
+                c.drawBitmap(
+                        decor.bitmap,
+                        decor.posX * SIZE + box.left + cameraX,
+                        decor.posY * SIZE + box.top + cameraY,
+                        null
+                );
             }
-
-            // --------- DEBUG ---------//
-            if (DRAW_ENTITY_BOX) c.drawRect(
-                    box.left + cameraX,
-                    box.top + cameraY,
-                    box.right + cameraX,
-                    box.bottom + cameraY,
-                    boxDebugPaint
-            );
-            if (DRAW_COLLISION_BOX && collisions != null) {
-                for (CollisionBox collision : collisions) {
-                    c.drawRect(
-                            collision.rect.left + box.left + cameraX,
-                            collision.rect.top + box.top + cameraY,
-                            collision.rect.right + box.left + cameraX,
-                            collision.rect.bottom + box.top + cameraY,
-                            collisionBoxDebugPaint
-                    );
-                }
+        }
+        // --------- DEBUG ---------//
+        if (DRAW_ENTITY_BOX) c.drawRect(
+                box.left + cameraX,
+                box.top + cameraY,
+                box.right + cameraX,
+                box.bottom + cameraY,
+                boxDebugPaint
+        );
+        if (DRAW_COLLISION_BOX && collisions != null) {
+            for (CollisionBox collision : collisions) {
+                System.out.println(collision.rect.left + ":" + collision.rect.top);
+                c.drawRect(
+                        collision.rect.left + box.left + cameraX,
+                        collision.rect.top + box.top + cameraY,
+                        collision.rect.right + box.left + cameraX,
+                        collision.rect.bottom + box.top + cameraY,
+                        collisionBoxDebugPaint
+                );
             }
+        }
     }
 
     public void addDecor(StructureSet structureSet, int decorId, int decorPosX, int decorPosY) {
