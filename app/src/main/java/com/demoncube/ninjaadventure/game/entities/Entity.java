@@ -25,6 +25,7 @@ public abstract class Entity implements Comparable<Entity> {
             collision.rect.left *= GameConst.Sprite.SCALE_MULTIPLIER;
             collision.rect.bottom *= GameConst.Sprite.SCALE_MULTIPLIER;
             collision.rect.right *= GameConst.Sprite.SCALE_MULTIPLIER;
+            System.out.println(collision.rect.top + ":" + collision.rect.left + ";" + collision.rect.bottom + ":" + collision.rect.right);
         }
     }
 
