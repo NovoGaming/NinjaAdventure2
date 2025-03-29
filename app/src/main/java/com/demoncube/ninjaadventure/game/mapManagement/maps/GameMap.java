@@ -9,15 +9,15 @@ import java.util.ArrayList;
 
 public class GameMap {
 
-    private int[][] spritesIds;
-    private int[][] tilesetIds;
+    private short[][] spritesIds;
+    private short[][] tilesetIds;
 
     private ArrayList<Structure> structures;
     private ArrayList<Skeleton> enemies;
     private ArrayList<Player> players = new ArrayList<>();
 
 
-    public GameMap(int[][] spritesIds, int[][] tilesetIds, ArrayList<Structure> structures) {
+    public GameMap(short[][] spritesIds, short[][] tilesetIds, ArrayList<Structure> structures) {
         if (structures == null) this.structures = new ArrayList<>(); else this.structures = structures;
         this.spritesIds = spritesIds;
         this.tilesetIds = tilesetIds;

@@ -13,7 +13,7 @@ public final class GameMapStorage {
     public static final class MainMap {
 
         //-------------------------------- Layer 1 --------------------------------//
-        public static final int[][] TILE_IDS = {
+        public static final short[][] TILE_IDS = {
                 {188, 189, 279, 275, 187, 189, 279, 275, 279, 276, 275, 279, 275, 275, 279, 275, 278, 276, 275, 278, 275, 279, 275},
                 {188, 189, 275, 279, 187, 189, 276, 275, 279, 275, 277, 275, 275, 277, 276, 275, 279, 278, 278, 275, 275, 279, 275},
                 {188, 189, 275, 276, 187, 189, 276, 279, 275, 278, 279, 279, 275, 275, 278, 278, 275, 275, 275, 276, 275, 279, 275},
@@ -32,7 +32,7 @@ public final class GameMapStorage {
                 {188, 188, 188, 254, 188, 256, 214, 167, 275, 275, 277, 275, 187, 189, 275, 278, 275, 275, 279, 275, 279, 278, 275}
         };
 
-        public static final int[][] TILESET_IDS = {
+        public static final short[][] TILESET_IDS = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -59,6 +59,8 @@ public final class GameMapStorage {
             array.add(new Structure(new PointF(5 * SIZE,9 * SIZE), StructureSet.VILLAGE,0));
             return array;
         }
+
+        // ERROR: if more of same structure type are used the collisions are messed up.
 
     }
 }
