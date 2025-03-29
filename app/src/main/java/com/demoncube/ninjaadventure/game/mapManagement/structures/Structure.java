@@ -85,7 +85,6 @@ public class Structure extends Entity {
         );
         if (DRAW_COLLISION_BOX && collisions != null) {
             for (CollisionBox collision : collisions) {
-                System.out.println(collision.rect.left + ":" + collision.rect.top);
                 c.drawRect(
                         collision.rect.left + box.left + cameraX,
                         collision.rect.top + box.top + cameraY,

@@ -110,10 +110,10 @@ public enum StructureSet implements BitmapMethods {
     //----------------------------------------------------------------------------------------------//
     //                                        Enum Functions                                        //
     //----------------------------------------------------------------------------------------------//
-    private final Bitmap spriteSheet;
-    private final Rect[] structureMap;  // left = x pos, top = y pos, right = width, bottom = height;
-    private final Rect[] decorMap;  // left = x pos, top = y pos, right = width, bottom = height;
-    private final  CollisionBox[][] collisionMap;
+    private Bitmap spriteSheet;
+    private Rect[] structureMap;  // left = x pos, top = y pos, right = width, bottom = height;
+    private Rect[] decorMap;  // left = x pos, top = y pos, right = width, bottom = height;
+    private CollisionBox[][] collisionMap;
 
     StructureSet(int resourceId, Rect[] structureMap, CollisionBox[][] collisionMap, Rect[] decorMap) {
         options.inScaled = false;

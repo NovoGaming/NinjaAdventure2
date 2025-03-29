@@ -16,16 +16,20 @@ public abstract class Entity implements Comparable<Entity> {
     protected CollisionBox[] collisions;
     protected boolean active = true;
 
+    static int test = 0;
+
     public Entity(PointF pos, float width, float height, CollisionBox[] collisions) {
+        test++;
         this.box = new RectF(pos.x, pos.y, pos.x + width, pos.y + height);
         this.collisions = collisions;
-        if (collisions == null) return;
+        if (this.collisions == null) return;
         for (CollisionBox collision: this.collisions) {
+            System.out.println(collision.rect.top + ":" + collision.rect.left + ";" + collision.rect.bottom + ":" + collision.rect.right + "(pre " + test + ")");
             collision.rect.top *= GameConst.Sprite.SCALE_MULTIPLIER;
             collision.rect.left *= GameConst.Sprite.SCALE_MULTIPLIER;
             collision.rect.bottom *= GameConst.Sprite.SCALE_MULTIPLIER;
             collision.rect.right *= GameConst.Sprite.SCALE_MULTIPLIER;
-            System.out.println(collision.rect.top + ":" + collision.rect.left + ";" + collision.rect.bottom + ":" + collision.rect.right);
+            System.out.println(collision.rect.top + ":" + collision.rect.left + ";" + collision.rect.bottom + ":" + collision.rect.right + "(after " + test + ")");
         }
     }
 
