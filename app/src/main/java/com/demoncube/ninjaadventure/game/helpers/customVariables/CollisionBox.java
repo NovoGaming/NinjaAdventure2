@@ -10,4 +10,9 @@ public class CollisionBox {
         this.rect = rect;
         this.collisionGroup = collisionGroup;
     }
+
+    public CollisionBox(CollisionBox collisionBox) {
+        this.rect = new Rect(collisionBox.rect);
+        this.collisionGroup = collisionBox.collisionGroup;
+    }
 }

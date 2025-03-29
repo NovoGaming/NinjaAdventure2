@@ -130,7 +130,6 @@ public enum StructureSet implements BitmapMethods {
         drawable.bitmap = getScaledBitmap(Bitmap.createBitmap(spriteSheet, structureMap[id].left * DEFAULT_SIZE, structureMap[id].top * DEFAULT_SIZE, structureMap[id].right * DEFAULT_SIZE, structureMap[id].bottom * DEFAULT_SIZE));
 
         drawable.collisions = collisionMap[id];
-
         return drawable;
     }
 
