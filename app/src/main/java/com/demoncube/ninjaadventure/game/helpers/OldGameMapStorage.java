@@ -1,91 +1,19 @@
 package com.demoncube.ninjaadventure.game.helpers;
 
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_SIZE;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.PointF;
 
-import com.demoncube.ninjaadventure.game.mapManagement.maps.Chunk;
 import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
 import com.demoncube.ninjaadventure.game.mapManagement.structures.StructureSet;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class GameMapStorage {
-
-    public static int[][] getTileIds(int id) {
-        switch (id) {
-            default: return MainMap.TILE_IDS;
-        }
-    }
-
-    public static int[][] getTileSetIds(int id) {
-        switch (id) {
-            default: return MainMap.TILESET_IDS;
-        }
-    }
-
-    public static List<Structure> getStructures(int id) {
-        switch (id) {
-            default: return MainMap.STRUCTURES();
-        }
-    }
-
-    public static Chunk getChunk(int mapId, int x, int y) {
-
-        int posX = x * CHUNK_SIZE;
-        int posY = y * CHUNK_SIZE;
-
-        int[][] tileIds = getTileIds(mapId);
-
-        if (posX + CHUNK_SIZE > tileIds[0].length || posX < 0) return null;
-        if (posY + CHUNK_SIZE > tileIds.length || posY < 0) return null;
-
-        Chunk chunk = new Chunk();
-        chunk.posX = x;
-        chunk.posY = y;
-
-        int[][] tileSetIds = getTileSetIds(mapId);
-
-        for (int i = 0; i < CHUNK_SIZE; i++) {
-            for (int j = 0; j < CHUNK_SIZE; j++) {
-                if (posX + i  > tileIds[0].length) {
-                    chunk.tileIds[i][j] = 10;
-                    chunk.tileSetIds[i][j] = 0;
-                    continue;
-                }
-                if (posY + j  > tileIds.length) {
-                    chunk.tileIds[i][j] = 10;
-                    chunk.tileSetIds[i][j] = 0;
-                    continue;
-                }
-                chunk.tileIds[i][j] = tileIds[posX+ i][posY + j];
-                chunk.tileSetIds[i][j] = tileSetIds[posX+ i][posY + j];
-            }
-        }
-
-        List<Structure> structures = getStructures(mapId);
-
-        for (Structure s: structures) {
-            PointF pos = s.getPosition();
-            if (
-                    pos.x > posX &&
-                    pos.x < posX + CHUNK_SIZE &&
-                    pos.y > posY &&
-                    pos.y < posY + CHUNK_SIZE
-            ) {
-                chunk.structures.add(s);
-            }
-        }
-
-        return chunk;
-    }
-
+public final class OldGameMapStorage {
     public static final class MainMap {
 
         //-------------------------------- Layer 1 --------------------------------//
-        public static final int[][] TILE_IDS = {
+        public static final short[][] TILE_IDS = {
                 {188, 189, 279, 275, 187, 189, 279, 275, 279, 276, 275, 279, 275, 275, 279, 275, 278, 276, 275, 278, 275, 279, 275},
                 {188, 189, 275, 279, 187, 189, 276, 275, 279, 275, 277, 275, 275, 277, 276, 275, 279, 278, 278, 275, 275, 279, 275},
                 {188, 189, 275, 276, 187, 189, 276, 279, 275, 278, 279, 279, 275, 275, 278, 278, 275, 275, 275, 276, 275, 279, 275},
@@ -104,7 +32,7 @@ public class GameMapStorage {
                 {188, 188, 188, 254, 188, 256, 214, 167, 275, 275, 277, 275, 187, 189, 275, 278, 275, 275, 279, 275, 279, 278, 275}
         };
 
-        public static final int[][] TILESET_IDS = {
+        public static final short[][] TILESET_IDS = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

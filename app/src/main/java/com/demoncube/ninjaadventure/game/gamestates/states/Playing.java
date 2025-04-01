@@ -13,7 +13,7 @@ import com.demoncube.ninjaadventure.game.Game;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
 import com.demoncube.ninjaadventure.game.entities.GameCharacters;
 import com.demoncube.ninjaadventure.game.entities.Player;
-import com.demoncube.ninjaadventure.game.mapManagement.MapManager;
+import com.demoncube.ninjaadventure.game.mapManagement.OldMapManager;
 import com.demoncube.ninjaadventure.game.gamestates.BaseState;
 import com.demoncube.ninjaadventure.game.gamestates.GameStateInterface;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
@@ -26,7 +26,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
     float cameraX = 0, cameraY = 0;
     ArrayList<UI> ui = new ArrayList<>();
-    MapManager mapManager;
+    OldMapManager oldMapManager;
 
     Player mainPlayer;
     PlayerController playerController;
@@ -39,13 +39,13 @@ public class Playing extends BaseState implements GameStateInterface {
         super(game);
         initDebug();
 
-        mapManager = new MapManager();
+        oldMapManager = new OldMapManager();
 
         UIJoystick joystick = new UIJoystick(new PointF( 180, SCREEN_HEIGHT-180),100, circlePaint, circleDPaint);
         ui.add(joystick);
         playerController = new PlayerController(joystick);
         mainPlayer = new Player(new PointF(cameraX*-1 + SCREEN_WIDTH/2f - GameConst.Sprite.SIZE/2f, cameraY*-1 + SCREEN_HEIGHT/2f - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
-        mapManager.getCurrentMap().getPlayers().add(mainPlayer);
+        oldMapManager.getCurrentMap().getPlayers().add(mainPlayer);
     }
 
     private void initDebug() {
@@ -65,13 +65,13 @@ public class Playing extends BaseState implements GameStateInterface {
         cameraX -= playerController.getMoveVectors().x * mainPlayer.getMovementSpeed() * delta;
         cameraY -= playerController.getMoveVectors().y * mainPlayer.getMovementSpeed() * delta;
 
-        mapManager.update(delta, cameraX, cameraY);
+        oldMapManager.update(delta, cameraX, cameraY);
         mainPlayer.update(delta, true, cameraX, cameraY);
     }
 
     @Override
     public void render(Canvas c) {
-        mapManager.render(c, cameraX, cameraY);
+        oldMapManager.render(c, cameraX, cameraY);
 
         for (UI element: ui) {
             element.render(c);

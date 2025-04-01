@@ -7,7 +7,7 @@ import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
 
 import java.util.ArrayList;
 
-public class GameMap {
+public class OldGameMap {
 
     private short[][] spritesIds;
     private short[][] tilesetIds;
@@ -17,7 +17,7 @@ public class GameMap {
     private ArrayList<Player> players = new ArrayList<>();
 
 
-    public GameMap(short[][] spritesIds, short[][] tilesetIds, ArrayList<Structure> structures) {
+    public OldGameMap(short[][] spritesIds, short[][] tilesetIds, ArrayList<Structure> structures) {
         if (structures == null) this.structures = new ArrayList<>(); else this.structures = structures;
         this.spritesIds = spritesIds;
         this.tilesetIds = tilesetIds;

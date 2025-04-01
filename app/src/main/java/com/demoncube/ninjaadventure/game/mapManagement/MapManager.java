@@ -1,143 +1,95 @@
 package com.demoncube.ninjaadventure.game.mapManagement;
 
-import static com.demoncube.ninjaadventure.game.GameSettings.debug.DRAW_MAP_COLLISIONS;
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.*;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_RADIUS;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-
-import com.demoncube.ninjaadventure.GameActivity;
 import com.demoncube.ninjaadventure.game.entities.Entity;
 import com.demoncube.ninjaadventure.game.entities.Player;
 import com.demoncube.ninjaadventure.game.helpers.GameMapStorage;
-import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
-import com.demoncube.ninjaadventure.game.mapManagement.maps.GameMap;
-import com.demoncube.ninjaadventure.game.mapManagement.maps.Tileset;
+import com.demoncube.ninjaadventure.game.mapManagement.maps.Chunk;
+import com.demoncube.ninjaadventure.game.mapManagement.maps.OldGameMap;
 import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
 
-import java.util.Arrays;
 
 public class MapManager {
-    private GameMap currentMap;
 
-    public Entity[] drawList;
+    private Chunk[][] chunks;
+    int centerChunkX, centerChunkY;
+    int CurrentMapId = 0;
 
-    private final Tileset floorset = Tileset.FLOOR;
-    private final Tileset cliffset = Tileset.CLIFF;
-
-    private final Paint collisionPaint;
-
-    public MapManager() {
-        initMap();
-        collisionPaint = new Paint();
-        collisionPaint.setStyle(Paint.Style.STROKE);
-        collisionPaint.setStrokeWidth(5);
-        collisionPaint.setColor(Color.BLACK);
+    public MapManager(int currentMapId, int centerChunkX, int playerChunkY) {
+        this.centerChunkX = centerChunkX;
+        this.centerChunkY = playerChunkY;
+        CurrentMapId = currentMapId;
+        chunks = new Chunk[CHUNK_RADIUS][CHUNK_RADIUS];
+        updateChunks(centerChunkX, centerChunkY);
     }
 
-    public int getCurrentMapWidth() {
-        return currentMap.getArrayWidth() * SIZE;
+    public void updateChunks(int newX, int newY) {
+
+        int shiftX = newX - centerChunkX;
+        int shiftY = newY - centerChunkY;
+        if (Math.abs(shiftX) == 1) {
+            shiftChunks(shiftX, 0);
+            return;
+        }
+        if (Math.abs(shiftY) == 1) {
+            shiftChunks(0, shiftY);
+            return;
+        }
+
+        for (int i = 0; i < CHUNK_RADIUS; i++) {
+            for (int j = 0; j < CHUNK_RADIUS; j++) {
+                int x = newX + i - 2;
+                int y = newY + j - 2;
+
+                chunks[i][j] = GameMapStorage.getChunk(CurrentMapId, x, y);
+            }
+        }
+
     }
 
-    public int getCurrentMapHeight() {
-        return currentMap.getArrayHeight() * SIZE;
+    private void shiftChunks(int xShift, int yShift) {
+    /*
+        for (int i = 0; i < CHUNK_RADIUS; i++) {
+            for (int j = 0; j < CHUNK_RADIUS; j++) {
+                int x = xShift + i;
+                int y = yShift + j;
+                if (x < 0) continue;
+                chunks[i][j] = chunks[y][x];
+            }
+        }
+     */
+
     }
+
+    //-----------------------------------------------------------------------//
+    //                                  Update                               //
+    //-----------------------------------------------------------------------//
 
     public void update(double delta, float cameraX, float cameraY) {
-        getDrawableList(currentMap);
+        getDrawableList();
         for (Entity e : drawList) {
             e.setLastCamYValue(cameraY);
         }
     }
 
-    private void getDrawableList(GameMap map) {
+    private void getDrawableList() {
         drawList = new Entity[getDrawableAmount(map)];
         int i = 0;
         if (map.getStructures() != null)
             for (Structure structure : map.getStructures()) {
                 drawList[i++] = structure;
-        };
+            };
         if (map.getPlayers() != null)
             for (Player player : map.getPlayers()) {
                 drawList[i++] = player;
-        };
+            };
     }
 
-    private int getDrawableAmount(GameMap map) {
+    private int getDrawableAmount(OldGameMap map) {
         int amount = 0;
         if (map.getStructures() != null) amount += map.getStructures().size();
         if (map.getPlayers() != null) amount += map.getPlayers().size();
         return amount;
-    }
-
-    public void render(Canvas c, float cameraX, float cameraY){
-
-        // Calculate number of tiles that fit horizontally and vertically
-        int tilesAcross = (int) Math.ceil(GameActivity.SCREEN_WIDTH / (float) SIZE);
-        int tilesDown = (int) Math.ceil(GameActivity.SCREEN_HEIGHT / (float) SIZE);
-
-        // Find the top-left corner tile on the map based on camera position
-        int startX = Math.max(0, (int) Math.floor(-cameraX / SIZE) - 1);
-        int startY = Math.max(0, (int) Math.floor(-cameraY / SIZE) - 1);
-
-        // Find the bottom-down corner tile on the map based on camera position
-        int tilesAcrossToDraw = Math.min(startX + tilesAcross + 2, currentMap.getArrayWidth());
-        int tilesDownToDraw = Math.min(startY + tilesDown + 2, currentMap.getArrayHeight());
-        Tileset tileset;
-
-        for (int i = startY; i < tilesDownToDraw;i++) {
-            for (int j = startX; j < tilesAcrossToDraw; j++) {
-                int spriteId = currentMap.getSpriteID(j, i);
-                switch (currentMap.getTileset(j, i)) {
-                    case 0: tileset = floorset; break;
-                    case 1: tileset = cliffset; break;
-                    default: {
-                        tileset = floorset;
-                        spriteId = 10;
-                    }
-                }
-                c.drawBitmap(
-                        tileset.getSprite(spriteId),
-                        j * SIZE + cameraX,
-                        i * SIZE + cameraY,
-                        null
-                );
-                if (DRAW_MAP_COLLISIONS) {
-                    CollisionBox[] collisions = tileset.getCollisions(spriteId);
-                    if (collisions == null) continue;
-                    for (CollisionBox collision : collisions) {
-                        c.drawRect(
-                                collision.rect.left + j * SIZE + cameraX,
-                                collision.rect.top + i * SIZE + cameraY,
-                                collision.rect.right + j * SIZE + cameraX,
-                                collision.rect.bottom + i * SIZE + cameraY,
-                                collisionPaint
-                        );
-                    }
-                }
-            }
-        }
-
-        Arrays.sort(drawList);
-        for (Entity e : drawList){
-            e.render(c, cameraX, cameraY);
-        }
-
-    }
-
-
-    //-----------------------------------------------------------
-    //                       Map Controls
-    //-----------------------------------------------------------
-    public GameMap getCurrentMap() {
-        return currentMap;
-    }
-
-    private void initMap() {
-
-        GameMap mainMap = new GameMap(GameMapStorage.MainMap.TILE_IDS, GameMapStorage.MainMap.TILESET_IDS, GameMapStorage.MainMap.STRUCTURES());
-
-        currentMap = mainMap;
     }
 }
