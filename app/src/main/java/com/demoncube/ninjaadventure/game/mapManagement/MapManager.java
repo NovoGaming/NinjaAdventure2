@@ -68,35 +68,23 @@ public class MapManager {
                 int chunkX = centerX + dx;
                 int chunkY = centerY + dy;
 
-                System.out.println( (dx + chunkRadius) + ":" + (dy + chunkRadius) + " | " + chunkX + ":" + chunkY);
                 Chunk chunk = GameMapStorage.getChunk(currentMapId, chunkX, chunkY);
-                if (chunk == null) System.out.println("NULL"); else System.out.println(chunk.posX + ":" + chunk.posY);
                 chunks[dx + chunkRadius][dy + chunkRadius] = chunk;
             }
         }
     }
 
-    private void shiftChunks(int newChunkX, int newChunkY) {
-        Chunk[][] newChunks = new Chunk[CHUNK_GRID_SIZE][CHUNK_GRID_SIZE];
-
-        for (int dx = -2; dx <= 2; dx++) {
-            for (int dy = -2; dy <= 2; dy++) {
-                int chunkX = newChunkX + dx;
-                int chunkY = newChunkY + dy;
-
-                if (isChunkInBounds(chunkX, chunkY)) {
-                    newChunks[dx + 2][dy + 2] = GameMapStorage.getChunk(currentMapId, chunkX, chunkY);
-                }
-            }
+    private void shiftChunks(int shiftX, int shiftY) {
+        if (shiftX > CHUNK_GRID_SIZE -1) return;
+        int startX;
+        if (shiftX > 0) {
+            startX = 0;
+        } else {
+            startX = CHUNK_GRID_SIZE;
         }
 
-        this.chunks = newChunks;
-        this.centerChunkX = newChunkX;
-        this.centerChunkY = newChunkY;
-    }
 
-    private boolean isChunkInBounds(int x, int y) {
-        return x >= 0 && y >= 0; // Adjust based on map boundaries
+
     }
 
     //-----------------------------------------------------------------------//
@@ -105,7 +93,17 @@ public class MapManager {
 
     public Entity[] drawList;
 
-    public void update(double delta, float cameraX, float cameraY) {
+    public void update(double delta, float cameraX, float cameraY, Player player) {
+
+        int newChunkX = (int) (player.getPosition().x / (CHUNK_SIZE * SIZE));
+        int newChunkY = (int) (player.getPosition().y / (CHUNK_SIZE * SIZE));
+
+        if (newChunkX != centerChunkX || newChunkY != centerChunkY) {
+            //shiftChunks( centerChunkX - newChunkX, centerChunkY - newChunkY );    //Work in progress
+            centerChunkX = newChunkX;
+            centerChunkY = newChunkY;
+        }
+
         getDrawableList();
         for (Entity e : drawList) {
             e.setLastCamYValue(cameraY);
@@ -158,10 +156,10 @@ public class MapManager {
                     renderChunk(c, cameraX, cameraY, chunk);
                     if (!DRAW_MAP_CHUNKS) continue;
                     c.drawRect(
-                            chunk.posX * CHUNK_SIZE * SIZE + cameraX,
-                            chunk.posY * CHUNK_SIZE * SIZE + cameraY,
-                             chunk.posX *CHUNK_SIZE * SIZE + cameraX + CHUNK_SIZE * SIZE,
-                             chunk.posY *CHUNK_SIZE * SIZE + cameraY + CHUNK_SIZE * SIZE,
+                            chunk.posY * CHUNK_SIZE * SIZE + cameraX,
+                            chunk.posX * CHUNK_SIZE * SIZE + cameraY,
+                             chunk.posY *CHUNK_SIZE * SIZE + cameraX + CHUNK_SIZE * SIZE,
+                             chunk.posX *CHUNK_SIZE * SIZE + cameraY + CHUNK_SIZE * SIZE,
                             debugPaint2
                     );
                 }

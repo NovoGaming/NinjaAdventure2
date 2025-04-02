@@ -40,8 +40,10 @@ public class GameMapStorage {
 
         int[][] tileIds = getTileIds(mapId);
 
-        if (posX > tileIds[0].length || posX < 0) return null;
-        if (posY > tileIds.length || posY < 0) return null;
+        System.out.println(posX + ":" + posY + " | " + tileIds[0].length + ":" + tileIds.length);
+
+        if (posX >= tileIds.length || posX < 0) return null;
+        if (posY >= tileIds[0].length || posY < 0) return null;
 
         Chunk chunk = new Chunk();
         chunk.posX = x;

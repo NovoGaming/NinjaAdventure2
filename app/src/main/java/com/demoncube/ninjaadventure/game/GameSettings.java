@@ -6,7 +6,7 @@ import android.graphics.Paint;
 public class GameSettings {
 
     public static class baseSettings {
-        public static int FRAME_RATE = 30;
+        public static int FRAME_RATE = 60;
         public static int TILE_CACHE_SIZE = 400;
     }
 

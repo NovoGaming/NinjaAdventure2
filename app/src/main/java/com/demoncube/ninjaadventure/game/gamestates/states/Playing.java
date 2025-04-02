@@ -67,7 +67,7 @@ public class Playing extends BaseState implements GameStateInterface {
         cameraY -= playerController.getMoveVectors().y * mainPlayer.getMovementSpeed() * delta;
 
         mainPlayer.update(delta, true, cameraX, cameraY);
-        mapManager.update(delta, cameraX, cameraY);
+        mapManager.update(delta, cameraX, cameraY, mainPlayer);
     }
 
     @Override
