@@ -113,14 +113,14 @@ public class MapManager {
                 if (chunk.structures != null)
                     for (Structure structure : chunk.structures) {
                         drawList[i++] = structure;
-                    };
+                    }
             }
         }
 
         if (players != null)
             for (Player player : players) {
                 drawList[i++] = player;
-            };
+            }
     }
 
     private int getDrawableAmount() {
