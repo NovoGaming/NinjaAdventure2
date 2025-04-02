@@ -75,14 +75,6 @@ public class MapManager {
     }
 
     private void shiftChunks(int shiftX, int shiftY) {
-        if (shiftX > CHUNK_GRID_SIZE -1) return;
-        int startX;
-        if (shiftX > 0) {
-            startX = 0;
-        } else {
-            startX = CHUNK_GRID_SIZE;
-        }
-
 
 
     }
@@ -99,7 +91,7 @@ public class MapManager {
         int newChunkY = (int) (player.getPosition().y / (CHUNK_SIZE * SIZE));
 
         if (newChunkX != centerChunkX || newChunkY != centerChunkY) {
-            //shiftChunks( centerChunkX - newChunkX, centerChunkY - newChunkY );    //Work in progress
+            shiftChunks( centerChunkX - newChunkX, centerChunkY - newChunkY );    //Work in progress
             centerChunkX = newChunkX;
             centerChunkY = newChunkY;
         }
