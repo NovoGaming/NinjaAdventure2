@@ -39,8 +39,8 @@ public class GameMapStorage {
 
         int[][] tileIds = getTileIds(mapId);
 
-        if (posX + CHUNK_SIZE > tileIds[0].length || posX < 0) return null;
-        if (posY + CHUNK_SIZE > tileIds.length || posY < 0) return null;
+        if (posX > tileIds[0].length || posX < 0) return null;
+        if (posY > tileIds.length || posY < 0) return null;
 
         Chunk chunk = new Chunk();
         chunk.posX = x;
@@ -50,18 +50,18 @@ public class GameMapStorage {
 
         for (int i = 0; i < CHUNK_SIZE; i++) {
             for (int j = 0; j < CHUNK_SIZE; j++) {
-                if (posX + i  > tileIds[0].length) {
+                if (posX + i  >= tileIds.length) {
                     chunk.tileIds[i][j] = 10;
                     chunk.tileSetIds[i][j] = 0;
                     continue;
                 }
-                if (posY + j  > tileIds.length) {
+                if (posY + j  >= tileIds[0].length) {
                     chunk.tileIds[i][j] = 10;
                     chunk.tileSetIds[i][j] = 0;
                     continue;
                 }
-                chunk.tileIds[i][j] = tileIds[posX+ i][posY + j];
-                chunk.tileSetIds[i][j] = tileSetIds[posX+ i][posY + j];
+                chunk.tileIds[i][j] = tileIds[posX + i][posY + j];
+                chunk.tileSetIds[i][j] = tileSetIds[posX + i][posY + j];
             }
         }
 
