@@ -14,7 +14,6 @@ import com.demoncube.ninjaadventure.game.controlers.PlayerController;
 import com.demoncube.ninjaadventure.game.entities.GameCharacters;
 import com.demoncube.ninjaadventure.game.entities.Player;
 import com.demoncube.ninjaadventure.game.mapManagement.MapManager;
-import com.demoncube.ninjaadventure.game.mapManagement.OldMapManager;
 import com.demoncube.ninjaadventure.game.gamestates.BaseState;
 import com.demoncube.ninjaadventure.game.gamestates.GameStateInterface;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;

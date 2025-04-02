@@ -10,18 +10,21 @@ import java.util.List;
 public class Chunk {
 
     public int posX, posY;
-    public int[][] tileIds;
-    public int[][] tileSetIds;
+    public short[][] tileIds;
+    public short[][] tileSetIds;
     public List<Structure> structures;
 
 
-    public Chunk () {
-        tileIds = new int[CHUNK_SIZE][CHUNK_SIZE];
-        tileSetIds = new int[CHUNK_SIZE][CHUNK_SIZE];
+    public Chunk (int x, int y) {
+        this.posX = x;
+        this.posY = y;
+
+        tileIds = new short[CHUNK_SIZE][CHUNK_SIZE];
+        tileSetIds = new short[CHUNK_SIZE][CHUNK_SIZE];
         structures = new ArrayList<>();
     }
 
-    public Chunk(int[][] tileIds, int[][] tileSetIds, List<Structure> structures) {
+    public Chunk(short[][] tileIds, short[][] tileSetIds, List<Structure> structures) {
         this.tileIds = tileIds;
         this.tileSetIds = tileSetIds;
         this.structures = structures;

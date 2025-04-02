@@ -1,4 +1,4 @@
-package com.demoncube.ninjaadventure.game.helpers;
+package com.demoncube.ninjaadventure.game.mapManagement.maps;
 
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
@@ -8,11 +8,35 @@ import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
 import com.demoncube.ninjaadventure.game.mapManagement.structures.StructureSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public final class OldGameMapStorage {
+public enum GameMaps {
+    MAIN(0, MainMap.TILE_IDS, MainMap.TILESET_IDS, MainMap.STRUCTURES());
+
+    public final int id;
+    public final short[][] tileIds;
+    public final short[][] tileSetIds;
+    public final List<Structure> structures;
+
+    GameMaps(int id, short[][] tileIds, short[][] tileSetIds, List<Structure> structures) {
+        this.id = id;
+        this.tileIds = tileIds;
+        this.tileSetIds = tileSetIds;
+        this.structures = structures;
+    }
+
+    public static GameMaps getById(int id) {
+        for (GameMaps map : values()) {
+            if (map.id == id) return map;
+        }
+        return MAIN; // Default fallback
+    }
+
+    //--------------------------------------------------------------------------------------------//
+    //                                 Map Classes containing data                                //
+    //--------------------------------------------------------------------------------------------//
+
     public static final class MainMap {
-
-        //-------------------------------- Layer 1 --------------------------------//
         public static final short[][] TILE_IDS = {
                 {188, 189, 279, 275, 187, 189, 279, 275, 279, 276, 275, 279, 275, 275, 279, 275, 278, 276, 275, 278, 275, 279, 275},
                 {188, 189, 275, 279, 187, 189, 276, 275, 279, 275, 277, 275, 275, 277, 276, 275, 279, 278, 278, 275, 275, 279, 275},
