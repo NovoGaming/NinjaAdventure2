@@ -40,7 +40,7 @@ public class Playing extends BaseState implements GameStateInterface {
         super(game);
         initDebug();
 
-        mapManager = new MapManager(0,1,1);
+        mapManager = new MapManager(0,2,2);
 
         UIJoystick joystick = new UIJoystick(new PointF( 180, SCREEN_HEIGHT-180),100, circlePaint, circleDPaint);
         ui.add(joystick);

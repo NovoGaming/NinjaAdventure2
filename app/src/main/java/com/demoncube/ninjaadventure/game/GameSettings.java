@@ -7,8 +7,7 @@ public class GameSettings {
 
     public static class baseSettings {
         public static int FRAME_RATE = 30;
-        //public static int TILE_CACHE_SIZE = 400;
-        public static int TILE_CACHE_SIZE = 4000;
+        public static int TILE_CACHE_SIZE = 400;
     }
 
     public static final class debug {

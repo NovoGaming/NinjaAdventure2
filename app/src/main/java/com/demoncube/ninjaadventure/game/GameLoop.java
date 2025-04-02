@@ -11,7 +11,7 @@ public class GameLoop {
     private Game game;
 
     // loop run variables
-    private final ScheduledExecutorService updateExecutor = Executors.newSingleThreadScheduledExecutor();
+    private ScheduledExecutorService updateExecutor = Executors.newSingleThreadScheduledExecutor();
     private final long frameTimeNs = 1_000_000_000 / GameSettings.baseSettings.FRAME_RATE;
     private boolean running = false;
     public boolean available = true;
@@ -64,6 +64,7 @@ public class GameLoop {
         fpsCounter = 0;
         lastDelta = System.nanoTime();
         running = true;
+
         scheduleNextUpdate();
     }
 

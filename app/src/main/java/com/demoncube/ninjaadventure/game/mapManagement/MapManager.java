@@ -119,6 +119,7 @@ public class MapManager {
         for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
             for (int k = 0; k < CHUNK_GRID_SIZE; k++) {
                 Chunk chunk = chunks[i][j];
+                if (chunk == null) continue;
                 if (chunk.structures != null)
                     for (Structure structure : chunk.structures) {
                         drawList[i++] = structure;
@@ -137,6 +138,7 @@ public class MapManager {
         for (int i = 0; i < CHUNK_GRID_SIZE; i++) {
             for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
                 Chunk chunk = chunks[i][j];
+                if (chunk == null) continue;
                 if (chunk.structures != null) amount += chunk.structures.size();
             }
         }
@@ -153,7 +155,6 @@ public class MapManager {
             for (int dy = -renderRadius; dy <= renderRadius; dy++) {
                 Chunk chunk = chunks[dx + offset + renderRadius][dy + offset + renderRadius];
                 if (chunk != null) {
-                    System.out.printf(dx + ":" + dy + "|");
                     renderChunk(c, cameraX, cameraY, chunk);
                     if (!DRAW_MAP_CHUNKS) continue;
                     c.drawRect(
@@ -165,9 +166,13 @@ public class MapManager {
                     );
                 }
             }
-            System.out.printf("|");
         }
-        System.out.printf(renderRadius + "," + offset + "\n");
+
+        Arrays.sort(drawList);
+        for (Entity e : drawList) {
+            e.render(c, cameraX, cameraY);
+        }
+
     }
 
     private void renderChunk(Canvas c, float cameraX, float cameraY, Chunk chunk) {
@@ -191,11 +196,6 @@ public class MapManager {
                         null
                 );
             }
-        }
-
-        Arrays.sort(drawList);
-        for (Entity e : drawList){
-            e.render(c, cameraX, cameraY);
         }
     }
 

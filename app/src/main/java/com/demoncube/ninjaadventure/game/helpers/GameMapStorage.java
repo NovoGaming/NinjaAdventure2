@@ -33,6 +33,7 @@ public class GameMapStorage {
     }
 
     public static Chunk getChunk(int mapId, int x, int y) {
+        System.out.println("Preparing chunk " + x + ":" + y);
 
         int posX = x * CHUNK_SIZE;
         int posY = y * CHUNK_SIZE;
