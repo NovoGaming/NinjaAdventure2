@@ -46,6 +46,7 @@ public class Playing extends BaseState implements GameStateInterface {
         playerController = new PlayerController(joystick);
         mainPlayer = new Player(new PointF(cameraX*-1 + SCREEN_WIDTH/2f - GameConst.Sprite.SIZE/2f, cameraY*-1 + SCREEN_HEIGHT/2f - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
         mapManager.players.add(mainPlayer);
+        mapManager.update(0, cameraX, cameraY, mainPlayer, true);
     }
 
     private void initDebug() {

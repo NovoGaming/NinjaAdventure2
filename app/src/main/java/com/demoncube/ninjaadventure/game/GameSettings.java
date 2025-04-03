@@ -28,6 +28,7 @@ public class GameSettings {
 
         public static int BOX_STROKE_WIDTH = 4;
         public static Paint.Style BOX_PAINT_STYLE = Paint.Style.STROKE;
+        public static int CHUNK_BORDER_COLOR = Color.GRAY;
         public static int COLLISION_BOX_COLOR = Color.WHITE;
         public static int PLAYER_BOX_COLOR = Color.GREEN;
         public static int WEAPON_BOX_COLOR = Color.BLUE;

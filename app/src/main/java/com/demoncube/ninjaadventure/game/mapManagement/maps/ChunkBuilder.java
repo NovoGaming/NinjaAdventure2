@@ -1,16 +1,15 @@
-package com.demoncube.ninjaadventure.game.helpers;
+package com.demoncube.ninjaadventure.game.mapManagement.maps;
 
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.PointF;
 
-import com.demoncube.ninjaadventure.game.mapManagement.maps.GameMaps;
-import com.demoncube.ninjaadventure.game.mapManagement.maps.Chunk;
 import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
 
 import java.util.List;
 
-public class GameMapStorage {
+public class ChunkBuilder {
 
     public static List<Structure> getStructures(int id) {
         return GameMaps.getById(id).structures;
@@ -49,11 +48,12 @@ public class GameMapStorage {
         for (Structure s: structures) {
             PointF pos = s.getPosition();
             if (
-                    pos.x > posX &&
-                    pos.x < posX + CHUNK_SIZE &&
-                    pos.y > posY &&
-                    pos.y < posY + CHUNK_SIZE
+                    pos.x > posX * SIZE &&
+                    pos.x < (posX + CHUNK_SIZE) * SIZE &&
+                    pos.y > posY * SIZE &&
+                    pos.y < (posY + CHUNK_SIZE) * SIZE
             ) {
+                System.out.println("Structure at " + pos.x + ":" + pos.y + "; loaded; " + posX + ":" + posY);
                 chunk.structures.add(s);
             }
         }

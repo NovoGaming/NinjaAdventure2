@@ -1,5 +1,7 @@
 package com.demoncube.ninjaadventure.game.mapManagement;
 
+import static com.demoncube.ninjaadventure.game.GameSettings.debug.BOX_STROKE_WIDTH;
+import static com.demoncube.ninjaadventure.game.GameSettings.debug.CHUNK_BORDER_COLOR;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.DRAW_MAP_CHUNKS;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.ACTIVE_CHUNK_GRID_SIZE;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_GRID_SIZE;
@@ -12,7 +14,7 @@ import android.graphics.Paint;
 
 import com.demoncube.ninjaadventure.game.entities.Entity;
 import com.demoncube.ninjaadventure.game.entities.Player;
-import com.demoncube.ninjaadventure.game.helpers.GameMapStorage;
+import com.demoncube.ninjaadventure.game.mapManagement.maps.ChunkBuilder;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.Chunk;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.Tileset;
 import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
@@ -29,7 +31,7 @@ public class MapManager {
 
     public ArrayList<Player> players = new ArrayList<>();
 
-    private final Paint debugPaint, debugPaint2;
+    private final Paint debugPaint;
 
     int renderRadius, offset;
 
@@ -43,16 +45,11 @@ public class MapManager {
 
         debugPaint = new Paint();
         debugPaint.setStyle(Paint.Style.STROKE);
-        debugPaint.setStrokeWidth(5);
-        debugPaint.setColor(Color.WHITE);
-
-        debugPaint2 = new Paint();
-        debugPaint2.setStyle(Paint.Style.STROKE);
-        debugPaint2.setStrokeWidth(5);
-        debugPaint2.setColor(Color.BLUE);
+        debugPaint.setStrokeWidth(BOX_STROKE_WIDTH);
+        debugPaint.setColor(CHUNK_BORDER_COLOR);
 
 
-        if (ACTIVE_CHUNK_GRID_SIZE > CHUNK_GRID_SIZE) {
+        if (ACTIVE_CHUNK_GRID_SIZE >= CHUNK_GRID_SIZE) {
             renderRadius = CHUNK_GRID_SIZE / 2;
             offset = 0;
         } else {
@@ -68,7 +65,7 @@ public class MapManager {
                 int chunkX = centerX + dx;
                 int chunkY = centerY + dy;
 
-                Chunk chunk = GameMapStorage.getChunk(currentMapId, chunkX, chunkY);
+                Chunk chunk = ChunkBuilder.getChunk(currentMapId, chunkX, chunkY);
                 chunks[dx + chunkRadius][dy + chunkRadius] = chunk;
             }
         }
@@ -76,7 +73,69 @@ public class MapManager {
 
     private void shiftChunks(int shiftX, int shiftY) {
 
+        //---------------------------------------- Y shift ----------------------------------------//
 
+        if (shiftY > 0) { // +Y shift
+            for (int i = 0; i < CHUNK_GRID_SIZE - shiftY; i++) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    chunks[i][j] = chunks[i + shiftY][j];
+                }
+            }
+
+            for (int i =  CHUNK_GRID_SIZE - shiftY; i < CHUNK_GRID_SIZE; i++) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    if (chunks[i][j] != null) {
+                        chunks[i][j] = ChunkBuilder.getChunk(currentMapId, chunks[i][j].posX + shiftY, chunks[i][j].posY);
+                    }
+                }
+            }
+        }
+        if (shiftY < 0) { // -Y shift
+            for (int i = CHUNK_GRID_SIZE -1 ; i > -shiftY -1; i--) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    chunks[i][j] = chunks[i + shiftY][j];
+                }
+            }
+
+            for (int i = 0; i < -shiftY; i++) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    if (chunks[i][j] != null) {
+                        chunks[i][j] = ChunkBuilder.getChunk(currentMapId, chunks[i][j].posX + shiftY, chunks[i][j].posY);
+                    }
+                }
+            }
+        }
+
+        //---------------------------------------- X shift ----------------------------------------//
+
+        if (shiftX > 0) { // +X shift
+            for (int i = 0; i < CHUNK_GRID_SIZE - shiftX; i++) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    chunks[j][i] = chunks[j][i + shiftX];
+                }
+            }
+            for (int i =  CHUNK_GRID_SIZE - shiftX; i < CHUNK_GRID_SIZE; i++) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    if (chunks[j][i] != null) {
+                        chunks[j][i] = ChunkBuilder.getChunk(currentMapId, chunks[j][i].posX, chunks[j][i].posY + shiftX);
+                    }
+                }
+            }
+        }
+        if (shiftX < 0) { // -X shift
+            for (int i = CHUNK_GRID_SIZE -1 ; i > -shiftX -1; i--) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    chunks[j][i] = chunks[j][i + shiftX];
+                }
+            }
+            for (int i = 0; i < -shiftX; i++) {
+                for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
+                    if (chunks[j][i] != null) {
+                        chunks[j][i] = ChunkBuilder.getChunk(currentMapId, chunks[j][i].posX, chunks[j][i].posY + shiftX);
+                    }
+                }
+            }
+        }
     }
 
     //-----------------------------------------------------------------------//
@@ -86,14 +145,26 @@ public class MapManager {
     public Entity[] drawList;
 
     public void update(double delta, float cameraX, float cameraY, Player player) {
+        update(delta, cameraX, cameraY, player, false);
+    }
 
-        int newChunkX = (int) (player.getPosition().x / (CHUNK_SIZE * SIZE));
-        int newChunkY = (int) (player.getPosition().y / (CHUNK_SIZE * SIZE));
+    public void update(double delta, float cameraX, float cameraY, Player player, boolean blockShifting) {
 
-        if (newChunkX != centerChunkX || newChunkY != centerChunkY) {
-            shiftChunks( centerChunkX - newChunkX, centerChunkY - newChunkY );    //Work in progress
-            centerChunkX = newChunkX;
+        int newChunkY = (int) ((player.getPosition().x + SIZE/2) / (CHUNK_SIZE * SIZE));
+        int newChunkX = (int) ((player.getPosition().y + SIZE/2) / (CHUNK_SIZE * SIZE));
+
+        if (newChunkY != centerChunkY || newChunkX != centerChunkX) {
+            int shiftX = newChunkY - centerChunkY;
+            int shiftY = newChunkX - centerChunkX;
+
+
+            if (((shiftX < 5 && shiftX > -5) || (shiftY < 5 && shiftY > -5)) && !blockShifting) {
+                shiftChunks(shiftX, shiftY);
+            } else {
+                updateChunks(newChunkX, newChunkY);
+            }
             centerChunkY = newChunkY;
+            centerChunkX = newChunkX;
         }
 
         getDrawableList();
@@ -108,7 +179,7 @@ public class MapManager {
 
         for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
             for (int k = 0; k < CHUNK_GRID_SIZE; k++) {
-                Chunk chunk = chunks[i][j];
+                Chunk chunk = chunks[j][k];
                 if (chunk == null) continue;
                 if (chunk.structures != null)
                     for (Structure structure : chunk.structures) {
@@ -152,7 +223,7 @@ public class MapManager {
                             chunk.posX * CHUNK_SIZE * SIZE + cameraY,
                              chunk.posY *CHUNK_SIZE * SIZE + cameraX + CHUNK_SIZE * SIZE,
                              chunk.posX *CHUNK_SIZE * SIZE + cameraY + CHUNK_SIZE * SIZE,
-                            debugPaint2
+                            debugPaint
                     );
                 }
             }
