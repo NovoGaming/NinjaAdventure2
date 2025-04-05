@@ -47,16 +47,18 @@ public class ChunkBuilder {
 
         for (Structure s: structures) {
             PointF pos = s.getPosition();
+            System.out.println("Checking chunk " + posX + ":" + posY + " between [" + (posX * SIZE) + ":" + (posY * SIZE) + "] and  [" + ((posX + CHUNK_SIZE) * SIZE) + ":" + ((posY + CHUNK_SIZE) * SIZE) + "] for pos [" + pos.x + ":" + pos.y + "]");
             if (
-                    pos.x > posX * SIZE &&
-                    pos.x < (posX + CHUNK_SIZE) * SIZE &&
-                    pos.y > posY * SIZE &&
-                    pos.y < (posY + CHUNK_SIZE) * SIZE
+                    pos.y >= posX * SIZE &&
+                    pos.y < (posX + CHUNK_SIZE) * SIZE &&
+                    pos.x >= posY * SIZE &&
+                    pos.x < (posY + CHUNK_SIZE) * SIZE
             ) {
                 System.out.println("Structure at " + pos.x + ":" + pos.y + "; loaded; " + posX + ":" + posY);
                 chunk.structures.add(s);
             }
         }
+        System.out.println("----------------------------------");
 
         return chunk;
     }
