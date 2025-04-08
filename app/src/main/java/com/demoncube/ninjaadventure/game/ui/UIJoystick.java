@@ -6,7 +6,7 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.demoncube.ninjaadventure.game.GameSettings;
-import com.demoncube.ninjaadventure.game.helpers.customVariables.vector;
+import com.demoncube.ninjaadventure.game.helpers.customVariables.Victor;
 
 public class UIJoystick implements UI{
 
@@ -16,7 +16,7 @@ public class UIJoystick implements UI{
     private boolean touchDown = false;
     private float xTouch, yTouch;
     private int pointerId = -1;
-    vector outputVector = new vector(0,0);
+    Victor outputVictor = new Victor(0,0);
 
 
     public UIJoystick(PointF centerPos, float radius, Paint basePaint,Paint decorPaint) {
@@ -35,10 +35,10 @@ public class UIJoystick implements UI{
     @Override
     public void render(Canvas c) {
         c.drawCircle(pos.x,pos.y, radius, basePaint);
-        c.drawCircle((float) (pos.x + (radius*outputVector.x)),(float) (pos.y + (radius*outputVector.y)), radius/3, decorPaint);
+        c.drawCircle((float) (pos.x + (radius* outputVictor.x)),(float) (pos.y + (radius* outputVictor.y)), radius/3, decorPaint);
         if (GameSettings.debug.DRAW_UI_DEBUG) {
-            c.drawText("x: " + outputVector.x, pos.x + radius + 10, pos.y - radius+25, debugPaint);
-            c.drawText("y: " + outputVector.y, pos.x + radius + 10, pos.y - radius+75, debugPaint);
+            c.drawText("x: " + outputVictor.x, pos.x + radius + 10, pos.y - radius+25, debugPaint);
+            c.drawText("y: " + outputVictor.y, pos.x + radius + 10, pos.y - radius+75, debugPaint);
             c.drawLine(pos.x, pos.y, xTouch,yTouch,debugPaint);
             c.drawLine(pos.x, pos.y, xTouch,pos.y,debugPaint);
             c.drawLine(xTouch, yTouch, xTouch,pos.y,debugPaint);
@@ -103,8 +103,8 @@ public class UIJoystick implements UI{
     private void resetJoystick () {
         touchDown = false;
         pointerId = -1;
-        outputVector.x = 0;
-        outputVector.y = 0;
+        outputVictor.x = 0;
+        outputVictor.y = 0;
     }
 
     private void calcOutputVector() {
@@ -120,12 +120,12 @@ public class UIJoystick implements UI{
             dx = dx/distance;
             dy = dy/distance;
         }
-        outputVector.x = dx;
-        outputVector.y = dy;
+        outputVictor.x = dx;
+        outputVictor.y = dy;
     }
 
-    public vector getOutputVector() {
-        return outputVector;
+    public Victor getOutputVector() {
+        return outputVictor;
     }
 }
 

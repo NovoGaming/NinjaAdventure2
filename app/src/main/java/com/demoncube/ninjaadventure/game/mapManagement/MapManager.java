@@ -35,13 +35,13 @@ public class MapManager {
 
     int renderRadius, offset;
 
-    public MapManager(int currentMapId, int centerChunkX, int centerChunkY) {
-        this.centerChunkX = centerChunkX;
-        this.centerChunkY = centerChunkY;
+    public MapManager(int currentMapId) {
+        this.centerChunkX = 0;
+        this.centerChunkY = 0;
         this.currentMapId = currentMapId;
 
         chunks = new Chunk[CHUNK_GRID_SIZE][CHUNK_GRID_SIZE];
-        updateChunks(this.centerChunkX, this.centerChunkY);
+        //updateChunks(this.centerChunkX, this.centerChunkY);
 
         debugPaint = new Paint();
         debugPaint.setStyle(Paint.Style.STROKE);
@@ -138,6 +138,21 @@ public class MapManager {
         }
     }
 
+    public Chunk[][] getChunks() {
+        return chunks;
+    }
+
+    public Chunk getChunk(int x, int y) {
+        if (x < 0 || x > CHUNK_GRID_SIZE) return null;
+        if (y < 0 || y > CHUNK_GRID_SIZE) return null;
+
+        return chunks[y][x];
+    }
+
+    public Chunk getCenterChunk() {
+        return chunks[CHUNK_GRID_SIZE /2][CHUNK_GRID_SIZE/2];
+    }
+
     //-----------------------------------------------------------------------//
     //                                  Update                               //
     //-----------------------------------------------------------------------//
@@ -148,17 +163,17 @@ public class MapManager {
         update(delta, cameraX, cameraY, player, false);
     }
 
-    public void update(double delta, float cameraX, float cameraY, Player player, boolean blockShifting) {
+    public void update(double delta, float cameraX, float cameraY, Player player, boolean forceUpdate) {
 
         int newChunkY = (int) ((player.getPosition().x + SIZE/2) / (CHUNK_SIZE * SIZE));
         int newChunkX = (int) ((player.getPosition().y + SIZE/2) / (CHUNK_SIZE * SIZE));
 
-        if (newChunkY != centerChunkY || newChunkX != centerChunkX) {
+        if ( forceUpdate || (newChunkY != centerChunkY || newChunkX != centerChunkX)) {
             int shiftX = newChunkY - centerChunkY;
             int shiftY = newChunkX - centerChunkX;
 
 
-            if (((shiftX < 5 && shiftX > -5) || (shiftY < 5 && shiftY > -5)) && !blockShifting) {
+            if (((shiftX < 5 && shiftX > -5) || (shiftY < 5 && shiftY > -5)) && !forceUpdate) {
                 shiftChunks(shiftX, shiftY);
             } else {
                 updateChunks(newChunkX, newChunkY);

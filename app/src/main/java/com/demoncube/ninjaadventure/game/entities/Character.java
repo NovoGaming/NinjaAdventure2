@@ -1,10 +1,10 @@
 package com.demoncube.ninjaadventure.game.entities;
 
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.HITBOX_SIZE;
-
 import android.graphics.PointF;
 
+import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
+import com.demoncube.ninjaadventure.game.entities.enums.GameCharacters;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 
@@ -16,6 +16,8 @@ public abstract class Character extends Entity {
     protected int movementSpeed = 0;
     protected GameCharacters gameCharType;
     protected ControllerInterface controller;
+
+    protected CollisionHandler collisionHandler;
 
     public Character(PointF pos, GameCharacters gameCharType, CollisionBox[] collisions) {
         super(pos, GameConst.Sprite.SIZE, GameConst.Sprite.SIZE, collisions);
@@ -76,6 +78,13 @@ public abstract class Character extends Entity {
     }
     public void setController(ControllerInterface controller) {
         this.controller = controller;
+    }
+
+    public CollisionHandler getCollisionHandler() {
+        return collisionHandler;
+    }
+    public void setCollisionHandler(CollisionHandler collisionHandler) {
+        this.collisionHandler = collisionHandler;
     }
 }
 

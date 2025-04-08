@@ -12,7 +12,7 @@ public abstract class Entity implements Comparable<Entity> {
     private float lastCamYValue = 0;
     private boolean lockCompare = false;
 
-    protected RectF box;
+    protected RectF BoundBox;
     protected CollisionBox[] collisions;
     protected boolean active = true;
 
@@ -20,7 +20,7 @@ public abstract class Entity implements Comparable<Entity> {
 
     public Entity(PointF pos, float width, float height, CollisionBox[] collisions) {
         test++;
-        this.box = new RectF(pos.x, pos.y, pos.x + width, pos.y + height);
+        this.BoundBox = new RectF(pos.x, pos.y, pos.x + width, pos.y + height);
 
         this.collisions = collisions;
         if (this.collisions == null) return;
@@ -37,8 +37,15 @@ public abstract class Entity implements Comparable<Entity> {
     public void update(double delta, float cameraX, float cameraY) {
 
     }
-    public RectF getBox() {
-        return box;
+    public RectF getBoundBox() {
+        return BoundBox;
+    }
+
+    public void setCollisions(CollisionBox[] collisions) {
+        this.collisions = collisions;
+    }
+    public CollisionBox[] getCollisions() {
+        return collisions;
     }
 
     public boolean isActive() {
@@ -54,12 +61,12 @@ public abstract class Entity implements Comparable<Entity> {
     }
 
     public PointF getPosition() {
-        return new PointF(box.left, box.top);
+        return new PointF(BoundBox.left, BoundBox.top);
     }
 
     @Override
     public int compareTo(Entity other) {
         if (other.lockCompare) return -1;
-        return Float.compare(box.bottom - lastCamYValue, other.box.bottom - other.lastCamYValue);
+        return Float.compare(BoundBox.bottom - lastCamYValue, other.BoundBox.bottom - other.lastCamYValue);
     }
 }

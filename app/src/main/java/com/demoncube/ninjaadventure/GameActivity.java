@@ -11,6 +11,7 @@ public class GameActivity extends BaseActivity {
     private static Context gameContext;
     private GameView gameView;
     public static int SCREEN_WIDTH, SCREEN_HEIGHT;
+    public static int SCREEN_CENTER_WIDTH, SCREEN_CENTER_HEIGHT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,9 @@ public class GameActivity extends BaseActivity {
         getWindowManager().getDefaultDisplay().getRealMetrics(dm);
         SCREEN_WIDTH = dm.widthPixels;
         SCREEN_HEIGHT = dm.heightPixels;
+
+        SCREEN_CENTER_WIDTH = SCREEN_WIDTH/2;
+        SCREEN_CENTER_HEIGHT = SCREEN_HEIGHT/2;
 
         gameView = new GameView(this);
         setContentView(gameView);

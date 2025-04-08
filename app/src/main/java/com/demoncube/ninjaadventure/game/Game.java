@@ -8,10 +8,10 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
-import com.demoncube.ninjaadventure.game.gamestates.BaseState;
 import com.demoncube.ninjaadventure.game.gamestates.states.DeathScreen;
 import com.demoncube.ninjaadventure.game.gamestates.states.Menu;
 import com.demoncube.ninjaadventure.game.gamestates.states.Playing;
+
 
 public class Game {
 

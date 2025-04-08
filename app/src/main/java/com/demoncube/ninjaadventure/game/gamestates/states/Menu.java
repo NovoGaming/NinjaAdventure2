@@ -1,8 +1,6 @@
 package com.demoncube.ninjaadventure.game.gamestates.states;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.view.MotionEvent;
 
 import com.demoncube.ninjaadventure.game.Game;

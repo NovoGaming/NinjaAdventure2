@@ -1,10 +1,10 @@
 package com.demoncube.ninjaadventure.game.controlers;
 
-import com.demoncube.ninjaadventure.game.helpers.customVariables.vector;
+import com.demoncube.ninjaadventure.game.helpers.customVariables.Victor;
 
 public interface ControllerInterface {
 
-    vector getMoveVectors();
+    Victor getMoveVectors();
     boolean isAttacking();
     boolean isInteracting();
 

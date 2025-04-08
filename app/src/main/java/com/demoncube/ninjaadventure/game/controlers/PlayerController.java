@@ -1,6 +1,6 @@
 package com.demoncube.ninjaadventure.game.controlers;
 
-import com.demoncube.ninjaadventure.game.helpers.customVariables.vector;
+import com.demoncube.ninjaadventure.game.helpers.customVariables.Victor;
 import com.demoncube.ninjaadventure.game.ui.UIJoystick;
 
 public class PlayerController implements ControllerInterface {
@@ -12,7 +12,7 @@ public class PlayerController implements ControllerInterface {
     }
 
     @Override
-    public vector getMoveVectors() {
+    public Victor getMoveVectors() {
         return joystick.getOutputVector();
     }
 

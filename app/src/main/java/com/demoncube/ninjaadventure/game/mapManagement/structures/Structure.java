@@ -61,35 +61,35 @@ public class Structure extends Entity {
     public void render(Canvas c, float cameraX, float cameraY) {
         c.drawBitmap(
                 mainBitmap,
-                box.left + cameraX,
-                box.top + cameraY,
+                BoundBox.left + cameraX,
+                BoundBox.top + cameraY,
                 null
         );
         if (decorBitmaps != null) {
             for (DecorBitmap decor : decorBitmaps) {
                 c.drawBitmap(
                         decor.bitmap,
-                        decor.posX * SIZE + box.left + cameraX,
-                        decor.posY * SIZE + box.top + cameraY,
+                        decor.posX * SIZE + BoundBox.left + cameraX,
+                        decor.posY * SIZE + BoundBox.top + cameraY,
                         null
                 );
             }
         }
         // --------- DEBUG ---------//
         if (DRAW_ENTITY_BOX) c.drawRect(
-                box.left + cameraX,
-                box.top + cameraY,
-                box.right + cameraX,
-                box.bottom + cameraY,
+                BoundBox.left + cameraX,
+                BoundBox.top + cameraY,
+                BoundBox.right + cameraX,
+                BoundBox.bottom + cameraY,
                 boxDebugPaint
         );
         if (DRAW_COLLISION_BOX && collisions != null) {
             for (CollisionBox collision : collisions) {
                 c.drawRect(
-                        collision.rect.left + box.left + cameraX,
-                        collision.rect.top + box.top + cameraY,
-                        collision.rect.right + box.left + cameraX,
-                        collision.rect.bottom + box.top + cameraY,
+                        collision.rect.left + BoundBox.left + cameraX,
+                        collision.rect.top + BoundBox.top + cameraY,
+                        collision.rect.right + BoundBox.left + cameraX,
+                        collision.rect.bottom + BoundBox.top + cameraY,
                         collisionBoxDebugPaint
                 );
             }

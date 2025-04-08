@@ -77,10 +77,10 @@ public enum GameMaps {
 
         public static ArrayList<Structure> STRUCTURES() {
             ArrayList<Structure> array = new ArrayList<>();
-            array.add(new Structure(new PointF(5 * SIZE,3 * SIZE), StructureSet.VILLAGE,8));
-            array.add(new Structure(new PointF(15 * SIZE,2 * SIZE), StructureSet.VILLAGE,0));
+            //array.add(new Structure(new PointF(5 * SIZE,3 * SIZE), StructureSet.VILLAGE,8));
+            //array.add(new Structure(new PointF(15 * SIZE,2 * SIZE), StructureSet.VILLAGE,0));
             array.add(new Structure(new PointF(16 * SIZE,9 * SIZE), StructureSet.VILLAGE,2));
-            array.add(new Structure(new PointF(7 * SIZE,10 * SIZE), StructureSet.VILLAGE,4));
+            //array.add(new Structure(new PointF(7 * SIZE,10 * SIZE), StructureSet.VILLAGE,4));
             return array;
         }
     }

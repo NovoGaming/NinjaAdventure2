@@ -9,7 +9,7 @@ import android.graphics.Rect;
 
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
 import com.demoncube.ninjaadventure.game.entities.Character;
-import com.demoncube.ninjaadventure.game.entities.GameCharacters;
+import com.demoncube.ninjaadventure.game.entities.enums.GameCharacters;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 
@@ -75,10 +75,10 @@ public class Skeleton extends Character {
             isMoving = false;
             resetAnimation();
         } else isMoving = true;
-        box.left += x * baseSpeed;
-        box.top += y * baseSpeed;
-        box.right += x * baseSpeed;
-        box.bottom += y * baseSpeed;
+        BoundBox.left += x * baseSpeed;
+        BoundBox.top += y * baseSpeed;
+        BoundBox.right += x * baseSpeed;
+        BoundBox.bottom += y * baseSpeed;
         if (Math.abs(x) > Math.abs(y)) {
             if (x > 0) faceDir = GameConst.FaceDir.RIGHT;
             if (x < 0) faceDir = GameConst.FaceDir.LEFT;
@@ -96,24 +96,24 @@ public class Skeleton extends Character {
     public void render(Canvas c, float cameraX, float cameraY){
         c.drawBitmap(
                 getGameCharType().getSprite(aniIndex, faceDir),
-                box.left + cameraX,
-                box.top + cameraY,
+                BoundBox.left + cameraX,
+                BoundBox.top + cameraY,
                 null
         );
         if (DRAW_ENTITY_BOX) c.drawRect(
-                box.left + cameraX,
-                box.top + cameraY,
-                box.right + cameraX,
-                box.bottom + cameraY,
+                BoundBox.left + cameraX,
+                BoundBox.top + cameraY,
+                BoundBox.right + cameraX,
+                BoundBox.bottom + cameraY,
                 boxDebugPaint
         );
         if (DRAW_COLLISION_BOX) {
             for (CollisionBox collision : collisions) {
                 c.drawRect(
-                        collision.rect.left + box.left + cameraX,
-                        collision.rect.top + box.top + cameraY,
-                        collision.rect.right + box.left + cameraX,
-                        collision.rect.bottom + box.top + cameraY,
+                        collision.rect.left + BoundBox.left + cameraX,
+                        collision.rect.top + BoundBox.top + cameraY,
+                        collision.rect.right + BoundBox.left + cameraX,
+                        collision.rect.bottom + BoundBox.top + cameraY,
                         collisionBoxDebugPaint
                 );
             }

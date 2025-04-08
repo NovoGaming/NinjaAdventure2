@@ -10,9 +10,13 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.demoncube.ninjaadventure.game.Game;
+import com.demoncube.ninjaadventure.game.handlers.CameraHandler;
+import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
-import com.demoncube.ninjaadventure.game.entities.GameCharacters;
+import com.demoncube.ninjaadventure.game.entities.enums.GameCharacters;
 import com.demoncube.ninjaadventure.game.entities.Player;
+import com.demoncube.ninjaadventure.game.handlers.cameras.ControllerCamera;
+import com.demoncube.ninjaadventure.game.handlers.cameras.FollowEntityCamera;
 import com.demoncube.ninjaadventure.game.mapManagement.MapManager;
 import com.demoncube.ninjaadventure.game.gamestates.BaseState;
 import com.demoncube.ninjaadventure.game.gamestates.GameStateInterface;
@@ -24,9 +28,11 @@ import java.util.ArrayList;
 
 public class Playing extends BaseState implements GameStateInterface {
 
+    CameraHandler camera;
     float cameraX = 0, cameraY = 0;
     ArrayList<UI> ui = new ArrayList<>();
     MapManager mapManager;
+    CollisionHandler collisionHandler;
 
     Player mainPlayer;
     PlayerController playerController;
@@ -39,12 +45,19 @@ public class Playing extends BaseState implements GameStateInterface {
         super(game);
         initDebug();
 
-        mapManager = new MapManager(0,2,2);
+        mapManager = new MapManager(0);
+        collisionHandler = new CollisionHandler(mapManager);
 
         UIJoystick joystick = new UIJoystick(new PointF( 180, SCREEN_HEIGHT-180),100, circlePaint, circleDPaint);
         ui.add(joystick);
+
         playerController = new PlayerController(joystick);
-        mainPlayer = new Player(new PointF(cameraX*-1 + SCREEN_WIDTH/2f - GameConst.Sprite.SIZE/2f, cameraY*-1 + SCREEN_HEIGHT/2f - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
+
+        mainPlayer = new Player(new PointF(SCREEN_CENTER_WIDTH - GameConst.Sprite.SIZE/2f, SCREEN_CENTER_HEIGHT - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
+        mainPlayer.setCollisionHandler(collisionHandler);
+
+        camera = new FollowEntityCamera(mainPlayer, SCREEN_CENTER_WIDTH - GameConst.Sprite.SIZE/2f, SCREEN_CENTER_HEIGHT - GameConst.Sprite.SIZE/2f);
+
         mapManager.players.add(mainPlayer);
         mapManager.update(0, cameraX, cameraY, mainPlayer, true);
     }
@@ -63,16 +76,16 @@ public class Playing extends BaseState implements GameStateInterface {
 
     @Override
     public void update(double delta) {
-        cameraX -= playerController.getMoveVectors().x * mainPlayer.getMovementSpeed() * delta;
-        cameraY -= playerController.getMoveVectors().y * mainPlayer.getMovementSpeed() * delta;
+        mainPlayer.update(delta, true, 0, 0);
+        camera.update(delta);
 
-        mainPlayer.update(delta, true, cameraX, cameraY);
-        mapManager.update(delta, cameraX, cameraY, mainPlayer);
+        mapManager.update(delta, camera.getX(), camera.getY(), mainPlayer);
+
     }
 
     @Override
     public void render(Canvas c) {
-        mapManager.render(c, cameraX, cameraY);
+        mapManager.render(c, camera.getX(), camera.getY());
 
         for (UI element: ui) {
             element.render(c);
