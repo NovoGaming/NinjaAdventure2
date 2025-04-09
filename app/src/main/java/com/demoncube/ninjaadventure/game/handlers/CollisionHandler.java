@@ -4,6 +4,7 @@ package com.demoncube.ninjaadventure.game.handlers;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.ACTIVE_CHUNK_GRID_SIZE;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_GRID_SIZE;
 
+import android.graphics.Rect;
 import android.graphics.RectF;
 
 import com.demoncube.ninjaadventure.game.entities.Character;
@@ -19,90 +20,122 @@ import java.util.List;
 public class CollisionHandler {
 
     private MapManager mapManager;
+    private List<CollisionBox> collisionMap;
+    private Rect mapBounds;
 
     public CollisionHandler(MapManager mapManager) {
         this.mapManager = mapManager;
     }
 
-    public int[] testCollisions (double delta, Character callingCharacter, double[] moveVector) {
-        int[] returnStatus = {0,0};
+    public void update(){
+        collisionMap = new ArrayList<>();
 
-        if ((moveVector[0] == 0 && moveVector[1] == 0)) return returnStatus;
-
-        float intendedMoveDistanceX = (float) (moveVector[0] * delta * callingCharacter.getMovementSpeed());
-        float intendedMoveDistanceY = (float) (moveVector[1] * delta * callingCharacter.getMovementSpeed());
-
-        List<Entity> toCheck = new ArrayList<>();
-
-        short chunkOffset = (CHUNK_GRID_SIZE - ACTIVE_CHUNK_GRID_SIZE) / 2;
-        for (int i = chunkOffset; i < ACTIVE_CHUNK_GRID_SIZE; i++) {
-            for (int j = chunkOffset; j < ACTIVE_CHUNK_GRID_SIZE; j++) {
+        for (int i = 0; i < CHUNK_GRID_SIZE; i++) {
+            for (int j = 0; j < CHUNK_GRID_SIZE; j++) {
                 Chunk chunk = mapManager.getChunk(i, j);
                 if (chunk == null) continue;
-                toCheck.addAll(chunk.structures);
-            }
-        }
 
-        if (toCheck.size() > 0) {
-            for (Entity e : toCheck) {
-                for (CollisionBox c : e.getCollisions()) {
-                    switch (c.collisionGroup) {
-
-                        case 0: {   // Check block collision
-                            for (CollisionBox cc : callingCharacter.getCollisions()) {
-                                if (cc.collisionGroup == 0) {
-
-                                    if (moveVector[0] != 0) { // check right and left
-                                        if (
-                                                callingCharacter.getBoundBox().left + cc.rect.left  + intendedMoveDistanceX < e.getBoundBox().left + c.rect.right  &&
-                                                callingCharacter.getBoundBox().left + cc.rect.right + intendedMoveDistanceX > e.getBoundBox().left + c.rect.left   &&
-                                                callingCharacter.getBoundBox().top  + cc.rect.top                           < e.getBoundBox().top  + c.rect.bottom &&
-                                                callingCharacter.getBoundBox().top  + cc.rect.bottom                        > e.getBoundBox().top  + c.rect.top
-                                        ) {
-                                            if (moveVector[0] > 0) {
-                                                returnStatus[0] = 1;
-                                            } else {
-                                                returnStatus[0] = -1;
-                                            }
-                                            moveVector[0] = 0;
-                                        }
-                                    }
-
-                                    if (moveVector[1] != 0) { // check up and down
-                                        if (
-                                                callingCharacter.getBoundBox().left + cc.rect.left                           < e.getBoundBox().left + c.rect.right  &&
-                                                callingCharacter.getBoundBox().left + cc.rect.right                          > e.getBoundBox().left + c.rect.left   &&
-                                                callingCharacter.getBoundBox().top  + cc.rect.top    + intendedMoveDistanceY < e.getBoundBox().top  + c.rect.bottom &&
-                                                callingCharacter.getBoundBox().top  + cc.rect.bottom + intendedMoveDistanceY > e.getBoundBox().top  + c.rect.top
-                                        ) {
-                                            if (moveVector[1] > 0) {
-                                                returnStatus[1] = 1;
-                                            } else {
-                                                returnStatus[1] = -1;
-                                            }
-                                            moveVector[1] = 0;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        break;
-
-                        case 1: {   // check trigger collisions
-                            System.out.println("trigger box check");
-                        }
-                        break;
+                for (Entity e : chunk.structures) {
+                    for (CollisionBox c : e.getCollisions()) {
+                        Rect transformedCollision = new Rect(c.rect);
+                        transformedCollision.offset((int) e.getBoundBox().left, (int) e.getBoundBox().top);
+                        collisionMap.add(new CollisionBox(transformedCollision, c.collisionGroup));
                     }
                 }
             }
         }
 
-
-
-
-
-        System.out.println(returnStatus[0] + ":" + returnStatus[1]);
-        return returnStatus;
+        mapBounds = new Rect(
+                0,
+                0,
+                mapManager.getMapWidth(),
+                mapManager.getMapHeight()
+        );
     }
 
+
+
+    public int[] testCollisions (double delta, Character callingCharacter, double[] moveVector) {
+        int[] returnStatus = {0,0};
+        if (collisionMap == null) return returnStatus;
+        if ((moveVector[0] == 0 && moveVector[1] == 0)) return returnStatus;
+
+        float intendedMoveDistanceX = (float) (moveVector[0] * delta * callingCharacter.getMovementSpeed());
+        float intendedMoveDistanceY = (float) (moveVector[1] * delta * callingCharacter.getMovementSpeed());
+
+        for (CollisionBox collisionBox : collisionMap) {
+
+            switch (collisionBox.collisionGroup){
+                case 0: {
+
+                    for (CollisionBox c : callingCharacter.getCollisions()){
+                        if (c.collisionGroup == 0) {
+                            Rect transformedCollision = new Rect(c.rect);
+                            transformedCollision.offset((int) callingCharacter.getBoundBox().left, (int) callingCharacter.getBoundBox().top);
+
+                            if (moveVector[0] != 0) { // check right and left
+                                if (    //map bounds check
+                                        transformedCollision.left + intendedMoveDistanceX < mapBounds.left ||
+                                        transformedCollision.right + intendedMoveDistanceX > mapBounds.right
+                                ) {
+                                    if (moveVector[0] > 0) {
+                                        returnStatus[0] = 1;
+                                    } else {
+                                        returnStatus[0] = -1;
+                                    }
+                                    moveVector[0] = 0;
+                                } else if ( // other collisions
+                                        transformedCollision.left  + intendedMoveDistanceX < collisionBox.rect.right  &&
+                                        transformedCollision.right + intendedMoveDistanceX > collisionBox.rect.left   &&
+                                        transformedCollision.top                           < collisionBox.rect.bottom &&
+                                        transformedCollision.bottom                        > collisionBox.rect.top
+                                ) {
+                                    if (moveVector[0] > 0) {
+                                        returnStatus[0] = 1;
+                                    } else {
+                                        returnStatus[0] = -1;
+                                    }
+                                    moveVector[0] = 0;
+                                }
+                            }
+
+                            if (moveVector[1] != 0) { // check up and down
+                                if (    //map bounds check
+                                        transformedCollision.top + intendedMoveDistanceY < mapBounds.top ||
+                                        transformedCollision.bottom + intendedMoveDistanceY > mapBounds.bottom
+                                ) {
+                                    if (moveVector[1] > 0) {
+                                        returnStatus[1] = 1;
+                                    } else {
+                                        returnStatus[1] = -1;
+                                    }
+                                    moveVector[1] = 0;
+                                } else if ( //other collisions
+                                        transformedCollision.left                           < collisionBox.rect.right  &&
+                                        transformedCollision.right                          > collisionBox.rect.left   &&
+                                        transformedCollision.top    + intendedMoveDistanceY < collisionBox.rect.bottom &&
+                                        transformedCollision.bottom + intendedMoveDistanceY > collisionBox.rect.top
+                                ) {
+                                    if (moveVector[1] > 0) {
+                                        returnStatus[1] = 1;
+                                    } else {
+                                        returnStatus[1] = -1;
+                                    }
+                                    moveVector[1] = 0;
+                                }
+                            }
+
+                        }
+                    }
+
+                } break;
+
+                case 1:{
+                    //trigger box detectieon
+                }
+            }
+        }
+
+        return returnStatus;
+    }
 }

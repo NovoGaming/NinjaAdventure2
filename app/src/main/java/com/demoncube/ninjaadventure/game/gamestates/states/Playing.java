@@ -76,6 +76,8 @@ public class Playing extends BaseState implements GameStateInterface {
 
     @Override
     public void update(double delta) {
+        collisionHandler.update();
+
         mainPlayer.update(delta, true, 0, 0);
         camera.update(delta);
 

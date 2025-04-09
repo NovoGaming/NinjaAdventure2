@@ -62,4 +62,12 @@ public class ChunkBuilder {
 
         return chunk;
     }
+
+    public static int getMapWidth(int id){
+        return GameMaps.getById(id).tileIds[0].length;
+    }
+
+    public static int getMapHeight(int id){
+        return GameMaps.getById(id).tileIds.length;
+    }
 }

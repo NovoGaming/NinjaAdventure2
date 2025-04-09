@@ -149,9 +149,6 @@ public class MapManager {
         return chunks[y][x];
     }
 
-    public Chunk getCenterChunk() {
-        return chunks[CHUNK_GRID_SIZE /2][CHUNK_GRID_SIZE/2];
-    }
 
     //-----------------------------------------------------------------------//
     //                                  Update                               //
@@ -274,4 +271,17 @@ public class MapManager {
             }
         }
     }
+
+    //-----------------------------------------------------------------------//
+    //                              Other Functions                          //
+    //-----------------------------------------------------------------------//
+
+    public int getMapWidth(){
+        return ChunkBuilder.getMapWidth(currentMapId) * SIZE;
+    }
+
+    public int getMapHeight(){
+        return ChunkBuilder.getMapHeight(currentMapId) * SIZE;
+    }
+
 }

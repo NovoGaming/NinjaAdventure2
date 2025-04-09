@@ -15,8 +15,7 @@ public class GameConst {
         public static final int DEFAULT_SIZE = 16;
         public static final int SCALE_MULTIPLIER = 6;
         public static final int SIZE = DEFAULT_SIZE * SCALE_MULTIPLIER;
-        public static final int HITBOX_SIZE = 12 * SCALE_MULTIPLIER;
-        public static final int CHUNK_SIZE = 16;
+        public static final int CHUNK_SIZE = 8;
         public static final int CHUNK_GRID_SIZE = 5;
         public static final int ACTIVE_CHUNK_GRID_SIZE = 3;
     }
