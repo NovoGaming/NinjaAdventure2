@@ -46,15 +46,15 @@ public enum StructureSet implements BitmapMethods {
                     new Rect(22,14,3,2),     //27    //Pole wall 2
             },
             new CollisionBox[][] {
-                    {new CollisionBox(new Rect(0, 16, 64, 48), 0)}, //0
-                    {new CollisionBox(new Rect(0, 16, 64, 48), 0)}, //1
-                    {new CollisionBox(new Rect(0, 16, 64, 48), 0)}, //2
-                    {new CollisionBox(new Rect(0, 16, 64, 48), 0)}, //3
-                    {new CollisionBox(new Rect(0, 16, 48, 48), 0)}, //4
-                    {new CollisionBox(new Rect(0, 16, 64, 48), 0)}, //5
+                    {new CollisionBox(new Rect(0, 16, 64, 48), 0), new CollisionBox(new Rect(12, 48, 36, 56), 1)}, //0
+                    {new CollisionBox(new Rect(0, 16, 64, 48), 0), new CollisionBox(new Rect(12, 48, 36, 56), 1)}, //1
+                    {new CollisionBox(new Rect(0, 16, 64, 48), 0), new CollisionBox(new Rect(12, 48, 36, 56), 1)}, //2
+                    {new CollisionBox(new Rect(0, 16, 64, 48), 0), new CollisionBox(new Rect(12, 48, 36, 56), 1)}, //3
+                    {new CollisionBox(new Rect(0, 16, 48, 48), 0), new CollisionBox(new Rect(12, 48, 36, 56), 1)}, //4
+                    {new CollisionBox(new Rect(0, 16, 64, 48), 0), new CollisionBox(new Rect(12, 48, 36, 56), 1)}, //5
                     {new CollisionBox(new Rect(0, 16, 48, 48), 0)}, //6
                     {new CollisionBox(new Rect(0, 16, 48, 48), 0)}, //7
-                    {new CollisionBox(new Rect(0, 32, 64, 64), 0)}, //8
+                    {new CollisionBox(new Rect(0, 32, 64, 64), 0), new CollisionBox(new Rect(12, 64, 36, 72), 1)}, //8
                     {new CollisionBox(new Rect(5, 38, 44, 62), 0)}, //9
                     {new CollisionBox(new Rect(0, 32, 64, 80), 0)}, //10
                     {new CollisionBox(new Rect(0, 32, 64, 80), 0)}, //11

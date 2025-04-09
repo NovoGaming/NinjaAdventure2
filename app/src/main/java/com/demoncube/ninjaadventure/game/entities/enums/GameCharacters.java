@@ -9,7 +9,6 @@ import android.util.Log;
 import com.demoncube.ninjaadventure.GameActivity;
 import com.demoncube.ninjaadventure.R;
 import com.demoncube.ninjaadventure.game.helpers.BitmapMethods;
-import com.demoncube.ninjaadventure.game.helpers.GameConst;
 
 public enum GameCharacters implements BitmapMethods {
 
@@ -18,7 +17,12 @@ public enum GameCharacters implements BitmapMethods {
     NINJA_GREEN(R.drawable.charactersheet_ninja_green_spritesheet),
     NINJA_BLUE(R.drawable.charactersheet_ninja_blue_spritesheet),
     NINJA_BLACK(R.drawable.charactersheet_ninja_black_spritesheet),
-    SKELETON(R.drawable.charactersheet_skeleton_spritesheet);
+    SKELETON(R.drawable.charactersheet_skeleton_spritesheet),
+    VILLAGER1(R.drawable.charactersheet_villiger_1_spritesheet),
+    VILLAGER2(R.drawable.charactersheet_villiger_2_spritesheet),
+    VILLAGER3(R.drawable.charactersheet_villiger_3_spritesheet),
+    VILLAGER4(R.drawable.charactersheet_villiger_4_spritesheet),
+    VILLAGER5(R.drawable.charactersheet_villiger_5_spritesheet);
 
     private final Bitmap spriteSheet;
     private Bitmap[][] sprites = new Bitmap[7][4];

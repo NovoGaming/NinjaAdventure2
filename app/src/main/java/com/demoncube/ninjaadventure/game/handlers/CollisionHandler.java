@@ -64,15 +64,13 @@ public class CollisionHandler {
         float intendedMoveDistanceY = (float) (moveVector[1] * delta * callingCharacter.getMovementSpeed());
 
         for (CollisionBox collisionBox : collisionMap) {
+            for (CollisionBox c : callingCharacter.getCollisions()){
 
-            switch (collisionBox.collisionGroup){
-                case 0: {
-
-                    for (CollisionBox c : callingCharacter.getCollisions()){
-                        if (c.collisionGroup == 0) {
-                            Rect transformedCollision = new Rect(c.rect);
-                            transformedCollision.offset((int) callingCharacter.getBoundBox().left, (int) callingCharacter.getBoundBox().top);
-
+                if (c.collisionGroup == 0) {
+                    Rect transformedCollision = new Rect(c.rect);
+                    transformedCollision.offset((int) callingCharacter.getBoundBox().left, (int) callingCharacter.getBoundBox().top);
+                    switch (collisionBox.collisionGroup){
+                        case 0: {
                             if (moveVector[0] != 0) { // check right and left
                                 if (    //map bounds check
                                         transformedCollision.left + intendedMoveDistanceX < mapBounds.left ||
@@ -98,7 +96,6 @@ public class CollisionHandler {
                                     moveVector[0] = 0;
                                 }
                             }
-
                             if (moveVector[1] != 0) { // check up and down
                                 if (    //map bounds check
                                         transformedCollision.top + intendedMoveDistanceY < mapBounds.top ||
@@ -124,14 +121,20 @@ public class CollisionHandler {
                                     moveVector[1] = 0;
                                 }
                             }
-
+                        } break;
+                        case 1:{ //trigger box detectieon
+                            if (
+                                    collisionBox.rect.contains(
+                                            (int) (transformedCollision.left + intendedMoveDistanceX),
+                                            (int) (transformedCollision.top + intendedMoveDistanceY),
+                                            (int) (transformedCollision.right + intendedMoveDistanceX),
+                                            (int) (transformedCollision.bottom + intendedMoveDistanceY)
+                                    )
+                            ) {
+                                System.out.println("Trigger");
+                            }
                         }
                     }
-
-                } break;
-
-                case 1:{
-                    //trigger box detectieon
                 }
             }
         }

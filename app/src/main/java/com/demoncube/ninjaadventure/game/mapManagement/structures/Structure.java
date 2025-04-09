@@ -6,6 +6,7 @@ import static com.demoncube.ninjaadventure.game.GameSettings.debug.COLLISION_BOX
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.DRAW_COLLISION_BOX;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.DRAW_ENTITY_BOX;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.PLAYER_BOX_COLOR;
+import static com.demoncube.ninjaadventure.game.GameSettings.debug.TRIGGER_AREA_COLOR;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.Bitmap;
@@ -25,7 +26,7 @@ public class Structure extends Entity {
     private final Bitmap mainBitmap;
     private ArrayList<DecorBitmap> decorBitmaps;
 
-    private Paint boxDebugPaint, collisionBoxDebugPaint;
+    private Paint boxDebugPaint, collisionBoxDebugPaint, triggerBoxDebugPaint;
     public Structure(PointF pos, StructureSet structureSet, int structureId) {
         super(
                 pos,
@@ -35,10 +36,10 @@ public class Structure extends Entity {
         );
         this.mainBitmap = structureSet.getStructure(structureId).bitmap;
         decorBitmaps = null;
-        init();
+        initDebug();
     }
 
-    private void init() {
+    private void initDebug() {
 
         //--------- DEBUG ---------//
         boxDebugPaint = new Paint();
@@ -50,6 +51,12 @@ public class Structure extends Entity {
         collisionBoxDebugPaint.setStrokeWidth(BOX_STROKE_WIDTH);
         collisionBoxDebugPaint.setStyle(BOX_PAINT_STYLE);
         collisionBoxDebugPaint.setColor(COLLISION_BOX_COLOR);
+
+
+        triggerBoxDebugPaint = new Paint();
+        triggerBoxDebugPaint.setStrokeWidth(BOX_STROKE_WIDTH);
+        triggerBoxDebugPaint.setStyle(BOX_PAINT_STYLE);
+        triggerBoxDebugPaint.setColor(TRIGGER_AREA_COLOR);
     }
 
     @Override
@@ -85,13 +92,29 @@ public class Structure extends Entity {
         );
         if (DRAW_COLLISION_BOX && collisions != null) {
             for (CollisionBox collision : collisions) {
-                c.drawRect(
-                        collision.rect.left + BoundBox.left + cameraX,
-                        collision.rect.top + BoundBox.top + cameraY,
-                        collision.rect.right + BoundBox.left + cameraX,
-                        collision.rect.bottom + BoundBox.top + cameraY,
-                        collisionBoxDebugPaint
-                );
+                switch (collision.collisionGroup){
+                    case 0: { // Draw standard collision
+                        c.drawRect(
+                                collision.rect.left + BoundBox.left + cameraX,
+                                collision.rect.top + BoundBox.top + cameraY,
+                                collision.rect.right + BoundBox.left + cameraX,
+                                collision.rect.bottom + BoundBox.top + cameraY,
+                                collisionBoxDebugPaint
+                        );
+                    } break;
+
+                    case 1: { // Draw trigger box
+                        c.drawRect(
+                                collision.rect.left + BoundBox.left + cameraX,
+                                collision.rect.top + BoundBox.top + cameraY,
+                                collision.rect.right + BoundBox.left + cameraX,
+                                collision.rect.bottom + BoundBox.top + cameraY,
+                                triggerBoxDebugPaint
+                        );
+                    } break;
+                }
+
+
             }
         }
     }
