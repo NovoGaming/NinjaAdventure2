@@ -34,7 +34,7 @@ public class GameLoop {
             double delta = (startTime - lastDelta) / (double) nanoSec;
             lastDelta = startTime;
 
-            game.update(delta);
+            game.update(delta, fpsCounter);
             if (available) game.render();
 
             //---------- FPS Calculation ----------//

@@ -10,12 +10,13 @@ import android.graphics.PointF;
 import android.view.MotionEvent;
 
 import com.demoncube.ninjaadventure.game.Game;
+import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
+import com.demoncube.ninjaadventure.game.controlers.RandomIAController;
 import com.demoncube.ninjaadventure.game.handlers.CameraHandler;
 import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
-import com.demoncube.ninjaadventure.game.entities.enums.GameCharacters;
+import com.demoncube.ninjaadventure.game.entities.characterEnums.GameCharacters;
 import com.demoncube.ninjaadventure.game.entities.Player;
-import com.demoncube.ninjaadventure.game.handlers.cameras.ControllerCamera;
 import com.demoncube.ninjaadventure.game.handlers.cameras.FollowEntityCamera;
 import com.demoncube.ninjaadventure.game.mapManagement.MapManager;
 import com.demoncube.ninjaadventure.game.gamestates.BaseState;
@@ -35,7 +36,7 @@ public class Playing extends BaseState implements GameStateInterface {
     CollisionHandler collisionHandler;
 
     Player mainPlayer;
-    PlayerController playerController;
+    ControllerInterface playerController;
 
     //------------- DEBUG -------------//
     Paint circlePaint, circleDPaint;
@@ -52,6 +53,7 @@ public class Playing extends BaseState implements GameStateInterface {
         ui.add(joystick);
 
         playerController = new PlayerController(joystick);
+        //playerController = new RandomIAController(2000);
 
         mainPlayer = new Player(new PointF(SCREEN_CENTER_WIDTH - GameConst.Sprite.SIZE/2f, SCREEN_CENTER_HEIGHT - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
         mainPlayer.setCollisionHandler(collisionHandler);
@@ -75,7 +77,7 @@ public class Playing extends BaseState implements GameStateInterface {
     }
 
     @Override
-    public void update(double delta) {
+    public void update(double delta, int frame) {
         collisionHandler.update();
 
         mainPlayer.update(delta, true, 0, 0);

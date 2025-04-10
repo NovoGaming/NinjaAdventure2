@@ -1,4 +1,4 @@
-package com.demoncube.ninjaadventure.game.mapManagement.structures;
+package com.demoncube.ninjaadventure.game.entities.structures;
 
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.BOX_PAINT_STYLE;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.BOX_STROKE_WIDTH;

@@ -8,7 +8,7 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
-import com.demoncube.ninjaadventure.game.entities.enums.GameCharacters;
+import com.demoncube.ninjaadventure.game.entities.characterEnums.GameCharacters;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 
@@ -77,7 +77,7 @@ public class Player extends Character{
         } else {
             isMoving = true;
             double[] moveVector = {x, y};
-            if (collisionHandler != null) collisionHandler.testCollisions(delta, this, moveVector);
+            if (collisionHandler != null) controller.feedBack(collisionHandler.testCollisions(delta, this, moveVector));
 
             BoundBox.left += moveVector[0];
             BoundBox.top += moveVector[1];

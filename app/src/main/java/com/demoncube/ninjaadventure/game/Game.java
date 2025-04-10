@@ -37,16 +37,16 @@ public class Game {
         DebugPaint.setTextSize(40);
     }
 
-    public  void update(double delta) {
+    public  void update(double delta, int frame) {
         switch (currentGameState) {
             case MENU:
-                menu.update(delta);
+                menu.update(delta, frame);
                 break;
             case PLAYING:
-                playing.update(delta);
+                playing.update(delta, frame);
                 break;
             case DEATH_SCREEN:
-                deathScreen.update(delta);
+                deathScreen.update(delta, frame);
                 break;
         }
     }
