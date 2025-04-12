@@ -15,11 +15,11 @@ public enum GameCharactersFaces implements BitmapMethods {
     NINJA_BLUE_FACE(R.drawable.charactersheet_ninja_blue_faceset),
     NINJA_BLACK_FACE(R.drawable.charactersheet_ninja_black_faceset),
     SKELETON_FACE(R.drawable.charactersheet_skeleton_faceset),
-    VILLAGER1_FACE(R.drawable.charactersheet_villiger_1_faceset),
-    VILLAGER2_FACE(R.drawable.charactersheet_villiger_2_faceset),
-    VILLAGER3_FACE(R.drawable.charactersheet_villiger_3_faceset),
-    VILLAGER4_FACE(R.drawable.charactersheet_villiger_4_faceset),
-    VILLAGER5_FACE(R.drawable.charactersheet_villiger_5_faceset);
+    VILLAGER1_FACE(R.drawable.charactersheet_villager_1_faceset),
+    VILLAGER2_FACE(R.drawable.charactersheet_villager_2_faceset),
+    VILLAGER3_FACE(R.drawable.charactersheet_villager_3_faceset),
+    VILLAGER4_FACE(R.drawable.charactersheet_villager_4_faceset),
+    VILLAGER5_FACE(R.drawable.charactersheet_villager_5_faceset);
 
     private final Bitmap faceSheet;
     GameCharactersFaces(int resourceId) {
