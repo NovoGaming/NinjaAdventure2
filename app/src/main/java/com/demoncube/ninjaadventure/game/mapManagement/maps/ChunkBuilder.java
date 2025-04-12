@@ -5,8 +5,10 @@ import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.PointF;
 
-import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
+import com.demoncube.ninjaadventure.game.entities.Character;
+import com.demoncube.ninjaadventure.game.entities.structures.Structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChunkBuilder {
@@ -69,5 +71,10 @@ public class ChunkBuilder {
 
     public static int getMapHeight(int id){
         return GameMaps.getById(id).tileIds.length;
+    }
+
+
+    public static List<Character> getNPCs (int id) {
+        return GameMaps.getById(id).NPCs;
     }
 }

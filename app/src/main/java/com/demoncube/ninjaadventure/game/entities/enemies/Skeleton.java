@@ -9,7 +9,7 @@ import android.graphics.Rect;
 
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
 import com.demoncube.ninjaadventure.game.entities.Character;
-import com.demoncube.ninjaadventure.game.entities.enums.GameCharacters;
+import com.demoncube.ninjaadventure.game.entities.characterEnums.GameCharacters;
 import com.demoncube.ninjaadventure.game.helpers.GameConst;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 

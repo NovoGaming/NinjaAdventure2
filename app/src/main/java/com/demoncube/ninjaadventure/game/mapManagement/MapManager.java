@@ -9,15 +9,15 @@ import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_S
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.demoncube.ninjaadventure.game.entities.Entity;
 import com.demoncube.ninjaadventure.game.entities.Player;
+import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.ChunkBuilder;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.Chunk;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.Tileset;
-import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
+import com.demoncube.ninjaadventure.game.entities.structures.Structure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -284,4 +284,7 @@ public class MapManager {
         return ChunkBuilder.getMapHeight(currentMapId) * SIZE;
     }
 
+    public void setCollisionHandlers (CollisionHandler collisionHandler) {
+
+    }
 }

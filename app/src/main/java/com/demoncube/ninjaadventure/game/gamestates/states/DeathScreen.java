@@ -14,7 +14,7 @@ public class DeathScreen extends BaseState implements GameStateInterface {
     }
 
     @Override
-    public void update(double delta) {
+    public void update(double delta, int frame) {
 
     }
 

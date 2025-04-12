@@ -1,15 +1,11 @@
-package com.demoncube.ninjaadventure.game.entities.enums;
-
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.DEFAULT_SIZE;
+package com.demoncube.ninjaadventure.game.entities.characterEnums;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.demoncube.ninjaadventure.GameActivity;
 import com.demoncube.ninjaadventure.R;
 import com.demoncube.ninjaadventure.game.helpers.BitmapMethods;
-import com.demoncube.ninjaadventure.game.helpers.GameConst;
 
 public enum GameCharactersFaces implements BitmapMethods {
 

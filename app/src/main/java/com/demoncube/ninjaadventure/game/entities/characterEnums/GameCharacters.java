@@ -1,4 +1,4 @@
-package com.demoncube.ninjaadventure.game.entities.enums;
+package com.demoncube.ninjaadventure.game.entities.characterEnums;
 
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.DEFAULT_SIZE;
 

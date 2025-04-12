@@ -4,25 +4,31 @@ import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.PointF;
 
-import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
-import com.demoncube.ninjaadventure.game.mapManagement.structures.StructureSet;
+import com.demoncube.ninjaadventure.game.controlers.RandomIAController;
+import com.demoncube.ninjaadventure.game.entities.Character;
+import com.demoncube.ninjaadventure.game.entities.Player;
+import com.demoncube.ninjaadventure.game.entities.characterEnums.GameCharacters;
+import com.demoncube.ninjaadventure.game.entities.structures.Structure;
+import com.demoncube.ninjaadventure.game.entities.structures.StructureSet;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public enum GameMaps {
-    MAIN(0, MainMap.TILE_IDS, MainMap.TILESET_IDS, MainMap.STRUCTURES());
+    MAIN(0, MainMap.TILE_IDS, MainMap.TILESET_IDS, MainMap.STRUCTURES(), MainMap.NPCs());
 
     public final int id;
     public final short[][] tileIds;
     public final short[][] tileSetIds;
     public final List<Structure> structures;
+    public final List<Character> NPCs;
 
-    GameMaps(int id, short[][] tileIds, short[][] tileSetIds, List<Structure> structures) {
+    GameMaps(int id, short[][] tileIds, short[][] tileSetIds, List<Structure> structures, List<Character> NPCs) {
         this.id = id;
         this.tileIds = tileIds;
         this.tileSetIds = tileSetIds;
         this.structures = structures;
+        this.NPCs = NPCs;
     }
 
     public static GameMaps getById(int id) {
@@ -83,5 +89,13 @@ public enum GameMaps {
             array.add(new Structure(new PointF(7 * SIZE,10 * SIZE), StructureSet.VILLAGE,4));
             return array;
         }
+
+        public static ArrayList<Character> NPCs(){
+            ArrayList<Character> array = new ArrayList<>();
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER1, new RandomIAController(20000)));
+
+            return array;
+        }
+
     }
 }

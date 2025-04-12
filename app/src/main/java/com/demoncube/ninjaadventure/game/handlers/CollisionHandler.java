@@ -1,18 +1,15 @@
 
 package com.demoncube.ninjaadventure.game.handlers;
 
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.ACTIVE_CHUNK_GRID_SIZE;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_GRID_SIZE;
 
 import android.graphics.Rect;
-import android.graphics.RectF;
 
 import com.demoncube.ninjaadventure.game.entities.Character;
 import com.demoncube.ninjaadventure.game.entities.Entity;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.CollisionBox;
 import com.demoncube.ninjaadventure.game.mapManagement.MapManager;
 import com.demoncube.ninjaadventure.game.mapManagement.maps.Chunk;
-import com.demoncube.ninjaadventure.game.mapManagement.structures.Structure;
 
 import java.util.ArrayList;
 import java.util.List;
