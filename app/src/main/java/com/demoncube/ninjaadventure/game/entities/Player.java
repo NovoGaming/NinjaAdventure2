@@ -77,12 +77,13 @@ public class Player extends Character{
         } else {
             isMoving = true;
             double[] moveVector = {x, y};
-            if (collisionHandler != null) controller.feedBack(collisionHandler.testCollisions(delta, this, moveVector));
+            if (collisionHandler != null) controller.feedBack(collisionHandler.testCollisions(this, moveVector));
 
             BoundBox.left += moveVector[0];
             BoundBox.top += moveVector[1];
             BoundBox.right += moveVector[0];
             BoundBox.bottom += moveVector[1];
+
             if (Math.abs(x) > Math.abs(y)) {
                 if (x > 0) faceDir = GameConst.FaceDir.RIGHT;
                 if (x < 0) faceDir = GameConst.FaceDir.LEFT;

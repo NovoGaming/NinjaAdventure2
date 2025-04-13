@@ -44,4 +44,8 @@ public class GameConst {
         public static int SKELETON = 75;
         public static int BAMBOO = 50;
     }
+
+    public static final class collisionHandler {
+        public static int BINARY_SEARCH_LOOP_AMOUNT = 12;
+    }
 }

@@ -7,6 +7,6 @@ public interface ControllerInterface {
     Victor getMoveVectors();
     boolean isAttacking();
     boolean isInteracting();
-    void feedBack( int[] feedBack);
+    void feedBack( double[] feedBack);
 
 }

@@ -27,7 +27,7 @@ public class PlayerController implements ControllerInterface {
     }
 
     @Override
-    public void feedBack(int[] feedBack) {
+    public void feedBack(double[] feedBack) {
 
     }
 

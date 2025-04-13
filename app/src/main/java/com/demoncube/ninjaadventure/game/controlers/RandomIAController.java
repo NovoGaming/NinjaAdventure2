@@ -10,7 +10,7 @@ public class RandomIAController implements ControllerInterface {
     long lastTimerUpdate;
 
     Victor moveVector;
-    int[] lastFeedBack;
+    double[] lastFeedBack;
 
     Random randomGenerator;
 
@@ -19,7 +19,7 @@ public class RandomIAController implements ControllerInterface {
         lastTimerUpdate = System.currentTimeMillis();
         moveVector = new Victor(0,0);
         this.randomGenerator = new Random();
-        lastFeedBack = new int[] {0, 0};
+        lastFeedBack = new double[] {0, 0};
     }
 
 
@@ -51,7 +51,7 @@ public class RandomIAController implements ControllerInterface {
     }
 
     @Override
-    public void feedBack(int[] feedBack) {
+    public void feedBack(double[] feedBack) {
         lastFeedBack = feedBack;
     }
 }
