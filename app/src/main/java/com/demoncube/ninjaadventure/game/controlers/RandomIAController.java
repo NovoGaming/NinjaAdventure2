@@ -1,5 +1,6 @@
 package com.demoncube.ninjaadventure.game.controlers;
 
+import com.demoncube.ninjaadventure.game.entities.Entity;
 import com.demoncube.ninjaadventure.game.helpers.customVariables.Victor;
 
 import java.util.Random;
@@ -24,7 +25,7 @@ public class RandomIAController implements ControllerInterface {
 
 
     @Override
-    public Victor getMoveVectors() {
+    public Victor getMoveVectors(float ownerPosX, float ownerPosY) {
         if (System.currentTimeMillis() >= lastTimerUpdate + updateTime) {
             moveVector.x = (randomGenerator.nextInt(21) - 10)/10f;
             moveVector.y = (randomGenerator.nextInt(21) - 10)/10f;

@@ -69,8 +69,8 @@ public class Skeleton extends Character {
 
     private void updatePlayerMove(double delta) {
         float baseSpeed = (float) (delta * movementSpeed);
-        double x = controller.getMoveVectors().x;
-        double y = controller.getMoveVectors().y;
+        double x = controller.getMoveVectors(getBoundBox().left, getBoundBox().top).x;
+        double y = controller.getMoveVectors(getBoundBox().left, getBoundBox().top).y;
         if (x == 0 && y == 0) {
             isMoving = false;
             resetAnimation();

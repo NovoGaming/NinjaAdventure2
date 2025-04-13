@@ -69,8 +69,8 @@ public class Player extends Character{
 
     private void updatePlayerMove(double delta) {
         float baseSpeed = (float) (delta * movementSpeed);
-        double x = controller.getMoveVectors().x * baseSpeed;
-        double y = controller.getMoveVectors().y * baseSpeed;
+        double x = controller.getMoveVectors(getBoundBox().left, getBoundBox().top).x * baseSpeed;
+        double y = controller.getMoveVectors(getBoundBox().left, getBoundBox().top).y * baseSpeed;
         if (x == 0 && y == 0) {
             isMoving = false;
             resetAnimation();

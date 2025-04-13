@@ -17,8 +17,8 @@ public class ControllerCamera implements CameraHandler {
 
     @Override
     public void update(double delta) {
-        x -= controller.getMoveVectors().x * delta * speed;
-        y -= controller.getMoveVectors().y * delta * speed;
+        x -= controller.getMoveVectors(0,0).x * delta * speed;
+        y -= controller.getMoveVectors(0,0).y * delta * speed;
     }
 
     @Override

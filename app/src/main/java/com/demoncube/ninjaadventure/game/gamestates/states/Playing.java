@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 import com.demoncube.ninjaadventure.game.Game;
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
-import com.demoncube.ninjaadventure.game.controlers.RandomIAController;
+import com.demoncube.ninjaadventure.game.controlers.EnemyAIController;
 import com.demoncube.ninjaadventure.game.handlers.CameraHandler;
 import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
@@ -37,6 +37,7 @@ public class Playing extends BaseState implements GameStateInterface {
 
     Player mainPlayer;
     ControllerInterface playerController;
+    EnemyAIController controller;
 
     //------------- DEBUG -------------//
     Paint circlePaint, circleDPaint;
@@ -53,9 +54,10 @@ public class Playing extends BaseState implements GameStateInterface {
         ui.add(joystick);
 
         playerController = new PlayerController(joystick);
-        //playerController = new RandomIAController(2000);
+        controller = new EnemyAIController();
+        controller.setMoveToPos(new PointF(10,10));
 
-        mainPlayer = new Player(new PointF(SCREEN_CENTER_WIDTH - GameConst.Sprite.SIZE/2f, SCREEN_CENTER_HEIGHT - GameConst.Sprite.SIZE/2f) ,GameCharacters.NINJA_RED, playerController);
+        mainPlayer = new Player(new PointF(1000,1000) ,GameCharacters.NINJA_RED, controller);
         mainPlayer.setCollisionHandler(collisionHandler);
 
         camera = new FollowEntityCamera(mainPlayer, SCREEN_CENTER_WIDTH - GameConst.Sprite.SIZE/2f, SCREEN_CENTER_HEIGHT - GameConst.Sprite.SIZE/2f);
@@ -82,6 +84,8 @@ public class Playing extends BaseState implements GameStateInterface {
 
         mainPlayer.update(delta, true, 0, 0);
         camera.update(delta);
+
+        if (controller.getMoveToPos() == null) mainPlayer.setController(playerController);
 
         mapManager.update(delta, camera.getX(), camera.getY(), mainPlayer);
 

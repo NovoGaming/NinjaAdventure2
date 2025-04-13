@@ -12,7 +12,7 @@ public class PlayerController implements ControllerInterface {
     }
 
     @Override
-    public Victor getMoveVectors() {
+    public Victor getMoveVectors(float ownerPosX, float ownerPosY) {
         return joystick.getOutputVector();
     }
 
