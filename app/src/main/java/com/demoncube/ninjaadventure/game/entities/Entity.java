@@ -14,7 +14,8 @@ public abstract class Entity implements Comparable<Entity> {
 
     protected RectF BoundBox;
     protected CollisionBox[] collisions;
-    protected boolean active = true;
+    protected boolean isActive = true;
+    protected boolean isAlive = true;
 
     static int test = 0;
 
@@ -33,7 +34,9 @@ public abstract class Entity implements Comparable<Entity> {
         }
     }
 
-    public void render(Canvas c, float cameraX, float cameraY) {}
+    public void render(Canvas c, float cameraX, float cameraY) {
+
+    }
     public void update(double delta, float cameraX, float cameraY) {
 
     }
@@ -49,11 +52,18 @@ public abstract class Entity implements Comparable<Entity> {
     }
 
     public boolean isActive() {
-        return active;
+        return isActive;
+    }
+    public void setActive(boolean active) {
+        this.isActive = active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
     }
 
     public void setLastCamYValue(float lastCamYValue) {

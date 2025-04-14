@@ -1,21 +1,23 @@
 package com.demoncube.ninjaadventure.game.mapManagement.maps;
 
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.CHUNK_GRID_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.CHUNK_SIZE;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.PointF;
 
 import com.demoncube.ninjaadventure.game.entities.Character;
 import com.demoncube.ninjaadventure.game.entities.structures.Structure;
+import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChunkBuilder {
 
-    public static List<Structure> getStructures(int id) {
-        return GameMaps.getById(id).structures;
-    }
+    //--------------------------------------------------------------------------------------------//
+    //                                     Chunk functions                                        //
+    //--------------------------------------------------------------------------------------------//
 
     public static Chunk getChunk(int mapId, int x, int y) {
 
@@ -65,16 +67,46 @@ public class ChunkBuilder {
         return chunk;
     }
 
+    //--------------------------------------------------------------------------------------------//
+    //                                    Structure functions                                     //
+    //--------------------------------------------------------------------------------------------//
+
+    public static List<Structure> getStructures(int id) {
+        return GameMaps.getById(id).structures;
+    }
+
+    //--------------------------------------------------------------------------------------------//
+    //                                      NPCs functions                                        //
+    //--------------------------------------------------------------------------------------------//
+
+    private static List<Character> getNPCs(int id) {
+        return GameMaps.getById(id).NPCs;
+    }
+
+    public static List<Character> getNPCs(int centerChunkX, int centerChunkY, int mapId, CollisionHandler collisionHandler) {
+
+        List<Character> list = new ArrayList<>();
+        int radius = CHUNK_GRID_SIZE / 2;
+
+        for (Character character : getNPCs(mapId)) {
+            if (
+                    character.getBoundBox().top >= (centerChunkY - radius) * CHUNK_SIZE * SIZE &&
+                    character.getBoundBox().top < (centerChunkY + radius + 1) * CHUNK_SIZE * SIZE &&
+                    character.getBoundBox().left >= (centerChunkX - radius) * CHUNK_SIZE * SIZE &&
+                    character.getBoundBox().left < (centerChunkX + radius + 1) * CHUNK_SIZE * SIZE
+            ) {
+                character.setCollisionHandler(collisionHandler);
+                list.add(character);
+            }
+        }
+        return list;
+    }
+
     public static int getMapWidth(int id){
         return GameMaps.getById(id).tileIds[0].length;
     }
 
     public static int getMapHeight(int id){
         return GameMaps.getById(id).tileIds.length;
-    }
-
-
-    public static List<Character> getNPCs (int id) {
-        return GameMaps.getById(id).NPCs;
     }
 }

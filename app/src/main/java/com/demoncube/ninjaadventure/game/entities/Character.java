@@ -36,10 +36,10 @@ public abstract class Character extends Entity {
     }
     private void moveAnimation(){
         aniTick++;
-        if (aniTick >= GameConst.Animation.SPEED) {
+        if (aniTick >= GameConst.Animation.CHARACTER_SPEED) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= GameConst.Animation.AMOUNT) {
+            if (aniIndex >= GameConst.Animation.CHARACTER_FRAMES_AMOUNT) {
                 aniIndex = 0;
             }
         }

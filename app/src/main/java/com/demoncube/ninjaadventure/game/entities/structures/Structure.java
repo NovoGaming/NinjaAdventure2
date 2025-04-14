@@ -92,7 +92,8 @@ public class Structure extends Entity {
         );
         if (DRAW_COLLISION_BOX && collisions != null) {
             for (CollisionBox collision : collisions) {
-                switch (collision.collisionGroup){
+                if (!collision.isActive) continue;
+                switch (collision.collisionGroup) {
                     case 0: { // Draw standard collision
                         c.drawRect(
                                 collision.rect.left + BoundBox.left + cameraX,
@@ -101,7 +102,8 @@ public class Structure extends Entity {
                                 collision.rect.bottom + BoundBox.top + cameraY,
                                 collisionBoxDebugPaint
                         );
-                    } break;
+                    }
+                    break;
 
                     case 1: { // Draw trigger box
                         c.drawRect(
@@ -111,10 +113,9 @@ public class Structure extends Entity {
                                 collision.rect.bottom + BoundBox.top + cameraY,
                                 triggerBoxDebugPaint
                         );
-                    } break;
+                    }
+                    break;
                 }
-
-
             }
         }
     }

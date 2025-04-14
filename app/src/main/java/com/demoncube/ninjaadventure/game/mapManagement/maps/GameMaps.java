@@ -83,16 +83,31 @@ public enum GameMaps {
 
         public static ArrayList<Structure> STRUCTURES() {
             ArrayList<Structure> array = new ArrayList<>();
+
             array.add(new Structure(new PointF(5 * SIZE,3 * SIZE), StructureSet.VILLAGE,8));
             array.add(new Structure(new PointF(15 * SIZE,2 * SIZE), StructureSet.VILLAGE,0));
             array.add(new Structure(new PointF(16 * SIZE,9 * SIZE), StructureSet.VILLAGE,2));
             array.add(new Structure(new PointF(7 * SIZE,10 * SIZE), StructureSet.VILLAGE,4));
+
             return array;
         }
 
         public static ArrayList<Character> NPCs(){
             ArrayList<Character> array = new ArrayList<>();
-            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER1, new RandomIAController(20000)));
+
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER1, new RandomIAController(1000)));
+            array.get(0).setMovementSpeed(400);
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER2, new RandomIAController(10000)));
+            array.get(1).setMovementSpeed(200);
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER3, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER4, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER5, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER1, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER2, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER3, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER4, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER5, new RandomIAController(5000)));
+            array.add(new Player(new PointF(10 * SIZE,2 * SIZE) , GameCharacters.VILLAGER3, new RandomIAController(5000)));
 
             return array;
         }

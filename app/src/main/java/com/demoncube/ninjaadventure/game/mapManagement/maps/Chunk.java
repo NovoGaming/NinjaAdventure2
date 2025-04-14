@@ -1,6 +1,6 @@
 package com.demoncube.ninjaadventure.game.mapManagement.maps;
 
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.CHUNK_SIZE;
 
 import com.demoncube.ninjaadventure.game.entities.Character;
 import com.demoncube.ninjaadventure.game.entities.structures.Structure;

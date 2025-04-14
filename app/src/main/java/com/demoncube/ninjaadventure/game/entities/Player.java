@@ -59,9 +59,9 @@ public class Player extends Character{
     //                             Update functions                            //
     //-------------------------------------------------------------------------//
 
-
-    public void update(double delta ,boolean movePlayer, float cameraX, float cameraY) {
-        if (movePlayer) {
+    @Override
+    public void update(double delta, float cameraX, float cameraY) {
+        if (true) { // Switch Between actions
             updateAnimation();
             updatePlayerMove(delta);
         }
@@ -113,17 +113,35 @@ public class Player extends Character{
                 BoundBox.bottom + cameraY,
                 boxDebugPaint
         );
-        if (DRAW_COLLISION_BOX) {
+        if (DRAW_COLLISION_BOX && collisions != null) {
             for (CollisionBox collision : collisions) {
-                c.drawRect(
-                        collision.rect.left + BoundBox.left + cameraX,
-                        collision.rect.top + BoundBox.top + cameraY,
-                        collision.rect.right + BoundBox.left + cameraX,
-                        collision.rect.bottom + BoundBox.top + cameraY,
-                        collisionBoxDebugPaint
-                );
+                if (!collision.isActive) continue;
+                switch (collision.collisionGroup) {
+                    case 0: { // Draw standard collision
+                        c.drawRect(
+                                collision.rect.left + BoundBox.left + cameraX,
+                                collision.rect.top + BoundBox.top + cameraY,
+                                collision.rect.right + BoundBox.left + cameraX,
+                                collision.rect.bottom + BoundBox.top + cameraY,
+                                collisionBoxDebugPaint
+                        );
+                    }
+                    break;
+
+                    case 1: { // Draw trigger box
+                        c.drawRect(
+                                collision.rect.left + BoundBox.left + cameraX,
+                                collision.rect.top + BoundBox.top + cameraY,
+                                collision.rect.right + BoundBox.left + cameraX,
+                                collision.rect.bottom + BoundBox.top + cameraY,
+                                null
+                        );
+                    }
+                    break;
+                }
             }
         }
+
     }
 
     //-------------------------------------------------------------------------//

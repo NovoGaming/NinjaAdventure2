@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import com.demoncube.ninjaadventure.game.Game;
 import com.demoncube.ninjaadventure.game.controlers.ControllerInterface;
 import com.demoncube.ninjaadventure.game.controlers.EnemyAIController;
+import com.demoncube.ninjaadventure.game.controlers.RandomIAController;
 import com.demoncube.ninjaadventure.game.handlers.CameraHandler;
 import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
 import com.demoncube.ninjaadventure.game.controlers.PlayerController;
@@ -63,6 +64,8 @@ public class Playing extends BaseState implements GameStateInterface {
         camera = new FollowEntityCamera(mainPlayer, SCREEN_CENTER_WIDTH - GameConst.Sprite.SIZE/2f, SCREEN_CENTER_HEIGHT - GameConst.Sprite.SIZE/2f);
 
         mapManager.players.add(mainPlayer);
+
+        mapManager.setCollisionHandlers(collisionHandler);
         mapManager.update(0, cameraX, cameraY, mainPlayer, true);
     }
 
@@ -82,7 +85,7 @@ public class Playing extends BaseState implements GameStateInterface {
     public void update(double delta, int frame) {
         collisionHandler.update();
 
-        mainPlayer.update(delta, true, 0, 0);
+        mainPlayer.update(delta, 0, 0);
         camera.update(delta);
 
         if (controller.getMoveToPos() == null) mainPlayer.setController(playerController);

@@ -3,14 +3,16 @@ package com.demoncube.ninjaadventure.game.mapManagement;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.BOX_STROKE_WIDTH;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.CHUNK_BORDER_COLOR;
 import static com.demoncube.ninjaadventure.game.GameSettings.debug.DRAW_MAP_CHUNKS;
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.ACTIVE_CHUNK_GRID_SIZE;
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_GRID_SIZE;
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.ACTIVE_CHUNK_GRID_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.RENDER_CHUNK_GRID_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.CHUNK_GRID_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.CHUNK_SIZE;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.SIZE;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.demoncube.ninjaadventure.game.entities.Character;
 import com.demoncube.ninjaadventure.game.entities.Entity;
 import com.demoncube.ninjaadventure.game.entities.Player;
 import com.demoncube.ninjaadventure.game.handlers.CollisionHandler;
@@ -21,27 +23,29 @@ import com.demoncube.ninjaadventure.game.entities.structures.Structure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class MapManager {
 
     private Chunk[][] chunks;
-    private int centerChunkX, centerChunkY;
+    private int centerChunkY, centerChunkX;
     private int currentMapId = 0;
 
-    public ArrayList<Player> players = new ArrayList<>();
+    public List<Player> players = new ArrayList<>();
+    public List<Character> NPCs = new ArrayList<>();
+    private CollisionHandler collisionHandler;
 
     private final Paint debugPaint;
 
-    int renderRadius, offset;
+    int renderRadius, activeRadius, renderOffset;
 
     public MapManager(int currentMapId) {
-        this.centerChunkX = 0;
         this.centerChunkY = 0;
+        this.centerChunkX = 0;
         this.currentMapId = currentMapId;
 
         chunks = new Chunk[CHUNK_GRID_SIZE][CHUNK_GRID_SIZE];
-        //updateChunks(this.centerChunkX, this.centerChunkY);
 
         debugPaint = new Paint();
         debugPaint.setStyle(Paint.Style.STROKE);
@@ -49,12 +53,18 @@ public class MapManager {
         debugPaint.setColor(CHUNK_BORDER_COLOR);
 
 
-        if (ACTIVE_CHUNK_GRID_SIZE >= CHUNK_GRID_SIZE) {
+        if (RENDER_CHUNK_GRID_SIZE >= CHUNK_GRID_SIZE) {
             renderRadius = CHUNK_GRID_SIZE / 2;
-            offset = 0;
+            renderOffset = 0;
         } else {
-            renderRadius = ACTIVE_CHUNK_GRID_SIZE / 2;
-            offset = CHUNK_GRID_SIZE / 2 - renderRadius;
+            renderRadius = RENDER_CHUNK_GRID_SIZE / 2;
+            renderOffset = CHUNK_GRID_SIZE / 2 - renderRadius;
+        }
+
+        if (ACTIVE_CHUNK_GRID_SIZE >= CHUNK_GRID_SIZE) {
+            activeRadius = CHUNK_GRID_SIZE / 2;
+        } else {
+            activeRadius = ACTIVE_CHUNK_GRID_SIZE / 2;
         }
     }
 
@@ -165,9 +175,9 @@ public class MapManager {
         int newChunkY = (int) ((player.getPosition().x + SIZE/2) / (CHUNK_SIZE * SIZE));
         int newChunkX = (int) ((player.getPosition().y + SIZE/2) / (CHUNK_SIZE * SIZE));
 
-        if ( forceUpdate || (newChunkY != centerChunkY || newChunkX != centerChunkX)) {
-            int shiftX = newChunkY - centerChunkY;
-            int shiftY = newChunkX - centerChunkX;
+        if ( forceUpdate || (newChunkY != centerChunkX || newChunkX != centerChunkY)) {
+            int shiftX = newChunkY - centerChunkX;
+            int shiftY = newChunkX - centerChunkY;
 
 
             if (((shiftX < 5 && shiftX > -5) || (shiftY < 5 && shiftY > -5)) && !forceUpdate) {
@@ -175,9 +185,28 @@ public class MapManager {
             } else {
                 updateChunks(newChunkX, newChunkY);
             }
-            centerChunkY = newChunkY;
-            centerChunkX = newChunkX;
+
+            centerChunkX = newChunkY;
+            centerChunkY = newChunkX;
+            if (collisionHandler == null) return;
+            NPCs = ChunkBuilder.getNPCs(centerChunkX, centerChunkY, currentMapId, collisionHandler);
         }
+
+        if (NPCs != null)
+            for (Character npc : NPCs) {
+                if (
+                        npc.getBoundBox().top >= (centerChunkY - activeRadius) * CHUNK_SIZE * SIZE &&
+                        npc.getBoundBox().top < (centerChunkY + activeRadius + 1) * CHUNK_SIZE * SIZE &&
+                        npc.getBoundBox().left >= (centerChunkX - activeRadius) * CHUNK_SIZE * SIZE &&
+                        npc.getBoundBox().left < (centerChunkX + activeRadius + 1) * CHUNK_SIZE * SIZE
+                ) {
+                    npc.setActive(true);
+                    npc.update(delta,cameraX,cameraY);
+                } else {
+                    npc.setActive(false);
+                }
+            }
+
 
         getDrawableList();
         for (Entity e : drawList) {
@@ -200,6 +229,11 @@ public class MapManager {
             }
         }
 
+        if (NPCs != null)
+            for (Character npc : NPCs) {
+                drawList[i++] = npc;
+            }
+
         if (players != null)
             for (Player player : players) {
                 drawList[i++] = player;
@@ -215,6 +249,11 @@ public class MapManager {
                 if (chunk.structures != null) amount += chunk.structures.size();
             }
         }
+
+        if (NPCs != null)
+            amount += NPCs.size();
+
+
         if (players != null) amount += players.size();
         return amount;
     }
@@ -226,7 +265,7 @@ public class MapManager {
     public void render(Canvas c, float cameraX, float cameraY) {
         for (int dx = -renderRadius; dx <= renderRadius; dx++) {
             for (int dy = -renderRadius; dy <= renderRadius; dy++) {
-                Chunk chunk = chunks[dx + offset + renderRadius][dy + offset + renderRadius];
+                Chunk chunk = chunks[dx + renderOffset + renderRadius][dy + renderOffset + renderRadius];
                 if (chunk != null) {
                     renderChunk(c, cameraX, cameraY, chunk);
                     if (!DRAW_MAP_CHUNKS) continue;
@@ -285,6 +324,6 @@ public class MapManager {
     }
 
     public void setCollisionHandlers (CollisionHandler collisionHandler) {
-
+        this.collisionHandler = collisionHandler;
     }
 }

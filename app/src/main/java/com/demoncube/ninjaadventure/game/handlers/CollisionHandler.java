@@ -1,7 +1,7 @@
 
 package com.demoncube.ninjaadventure.game.handlers;
 
-import static com.demoncube.ninjaadventure.game.helpers.GameConst.Sprite.CHUNK_GRID_SIZE;
+import static com.demoncube.ninjaadventure.game.helpers.GameConst.GameMap.CHUNK_GRID_SIZE;
 import static com.demoncube.ninjaadventure.game.helpers.GameConst.collisionHandler.BINARY_SEARCH_LOOP_AMOUNT;
 
 import android.graphics.Rect;
@@ -100,7 +100,7 @@ public class CollisionHandler {
                         if (moveVector[1] != 0) {
                             if (checkAABBCollision( testRect.left, (float) (testRect.top + moveVector[1]), testRect.right, (float) (testRect.bottom + moveVector[1]), cb.rect)) {
                                 if (moveVector[1] > 0) {
-                                    double low = 0, high = moveVector[0], best = 0;
+                                    double low = 0, high = moveVector[1], best = 0;
                                     float mid;
                                     for (int i = 0; i < BINARY_SEARCH_LOOP_AMOUNT; i++) {
                                         mid = (float) ((low + high) / 2);
