@@ -1,0 +1,18 @@
+Collision Handler
+- Optimize
+- Add trace collision along line for npc sight code
+
+Map Manager
+- Optimize 
+
+Chunk Builder
+- Optimize
+
+NPCs System
+- add player detection
+- add spawnPoint location + roam area
+- add code for enemyes to folow player until too far from spawn point, return to spawn point when too far
+- add pathfinding for NPCs
+
+Attack system:
+- create it
